@@ -1,15 +1,31 @@
 <div id="loader" *ngIf=comum.globalLoading></div>
 <div id="loader-mini" [hidden]="!comum.loading"></div>
 <div id="container" class="effect aside-float aside-bright " [ngClass]="{ 'mainnav-lg':!collapsed , 'mainnav-sm':collapsed}">
-    <app-header *ngIf="loggedAcc" [loggedAcc]="loggedAcc" [showStore]="showStore">
-    </app-header>
 
     <div class="boxed">
         <div id="content-container" [ngClass]="{'no-padding':!loggedAcc}">
+            <div id="page-head">
+                    
+                <!--Page Title-->
+                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                <div id="page-title">
+                    <h1 class="page-header text-overflow" *ngIf="this.comum.activeResource">{{ this.comum.activeResource[this.comum.lang] }}</h1>
 
+                    <!--Searchbox-->
+                    <div class="searchbox">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Suporte..">
+                            <span class="input-group-btn">
+                                <button class="text-muted" type="button"><i class="demo-pli-magnifi-glass"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                <!--End page title-->                </div>
             <router-outlet></router-outlet>
         </div>
-        <app-menu *ngIf="loggedAcc" [userType]=loggedAcc.account_type [displayImage]=loggedAcc.photo_url [displayName]=loggedAcc.display_name [displayEmail]=loggedAcc.email></app-menu>
+        <app-menu *ngIf="loggedAcc && resource" [userType]=loggedAcc.account_type [displayImage]=loggedAcc.photo_url [displayName]=loggedAcc.display_name [displayEmail]=loggedAcc.email [resource]=resource.menu></app-menu>
     </div>
     <app-footer *ngIf="loggedAcc "></app-footer>
     <button class="scroll-top btn ">

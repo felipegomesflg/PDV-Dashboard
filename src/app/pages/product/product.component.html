@@ -195,10 +195,19 @@
 <!-- PRODUTOS -->
 <ng-template #produto let-c="close" let-d="dismiss" class="modal fade" id="product-default-modal" role="dialog" tabindex="-1">
     <div class="modal-header">
-        <button type="button" class="close" (click)="c('Close click')">
-            <i class="pci-cross pci-circle"></i>
-        </button>
+        <button class="btn btn-danger pull-left margin-right-10" type="button" (click)="deleteData(true)" *ngIf='EditData.id'>Excluir</button>
+        <!-- switch -->
+        <input type="checkbox" class="switch" id="switch" [(ngModel)]="EditData.active">
+        <label class="switch-label" for="switch"></label>
+        <p class="switch-text">
+            <span *ngIf="EditData.active">Ativo</span>
+            <span *ngIf="!EditData.active">Inativo</span>
+        </p>
         <h4 class="modal-title">Cadastro de Produtos</h4>
+        <!-- switch -->
+        <button data-dismiss="modal" class="btn btn-default pull-right" type="button" (click)="c('Close click')">Fechar</button>
+        <button class="btn btn-primary pull-right" (click)="saveData(true)">Salvar</button>
+
     </div>
     <div class="modal-body">
         <form>
@@ -266,27 +275,23 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-danger pull-left margin-right-10" type="button" (click)="deleteData(true)" *ngIf='EditData.id'>Excluir</button>
-        <!-- switch -->
-        <input type="checkbox" class="switch" id="switch" [(ngModel)]="EditData.active">
-        <label class="switch-label" for="switch"></label>
-        <p class="switch-text">
-            <span *ngIf="EditData.active">Ativo</span>
-            <span *ngIf="!EditData.active">Inativo</span>
-        </p>
-        <!-- switch -->
-        <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
-        <button class="btn btn-primary" (click)="saveData(true)">Salvar</button>
+        
     </div>
 </ng-template>
 
 <!-- CATEGORIAS -->
 <ng-template #categoria let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
     <div class="modal-header">
-        <button type="button" class="close" (click)="c('Close click')">
-            <i class="pci-cross pci-circle"></i>
-        </button>
+        <div class="pull-left">
+            <button type="button" class="close" (click)="c('Close click')">
+                <i class="pci-cross pci-circle"></i>
+            </button>
+        </div>
         <h4 class="modal-title">Cadastro de Categoria</h4>
+        <div class="pull-right">
+            <button class="btn btn-danger pull-left" type="button" (click)="deleteData(false)" *ngIf='(this.comumService.accountTypeId == 1 || this.comumService.accountTypeId == 10 || this.comumService.accountTypeId == 2) && EditDataCategory.id'>Excluir</button> 
+            <button class="btn btn-primary" (click)="saveData(false)">Salvar</button>
+        </div>
     </div>
     <div class="modal-body">
         <form class="form-horizontal">
@@ -321,9 +326,5 @@
 
         </form>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-danger pull-left" type="button" (click)="deleteData(false)" *ngIf='(this.comumService.accountTypeId == 1 || this.comumService.accountTypeId == 10 || this.comumService.accountTypeId == 2) && EditDataCategory.id'>Excluir</button>
-        <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
-        <button class="btn btn-primary" (click)="saveData(false)">Salvar</button>
-    </div>
+    
 </ng-template>

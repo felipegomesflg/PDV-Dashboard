@@ -3,6 +3,8 @@ import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { AngularFireAuth } from "angularfire2/auth";
 import { AngularFireDatabase } from "angularfire2/database";
 import { Router, RoutesRecognized, NavigationEnd,ActivatedRoute } from "@angular/router";
+import { Location } from '@angular/common';
+
 import { LocalStorageService } from "angular-2-local-storage";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 
@@ -10,6 +12,8 @@ import { AuthGuard } from "./services/auth.service";
 import { isDev,version } from "./app.environment";
 import { ComumService } from "./services/comum.service";
 import { Intercom } from "ng-intercom";
+
+import {resource} from './services/resource.service';
 
 import * as moment from "moment";
 
@@ -34,6 +38,9 @@ export class AppComponent {
 
   private showStore :boolean;
 
+  public resource:any;
+  
+
   constructor(
     public af: AngularFireAuth,
     public db: AngularFireDatabase,
@@ -43,7 +50,8 @@ export class AppComponent {
     private router: Router,
     route: ActivatedRoute,
     private vcr: ViewContainerRef,
-    public toastr: ToastsManager) {   
+    public toastr: ToastsManager,
+    location: Location) {   
 
     this.isDev = isDev;
   
@@ -55,7 +63,7 @@ export class AppComponent {
 
     this.comum.path.subscribe(path => {
       //debugger;
-      this.loadData(path);
+      this.loadData(path); 
     });
     if(this.path)
           this.loadData(this.path);
@@ -70,12 +78,26 @@ export class AppComponent {
     //     this.authService.reloadAccounts();
     //   }
     // })
+
+    
+    router.events.subscribe((val) => {
+      if(location.path() != ''){
+        for(var i in resource.menu){
+          if(resource.menu[i]['routerLink'] && resource.menu[i]['routerLink'] == location.path()){
+            this.comum.activeResource = resource.menu[i];
+          }
+        }
+      }
+      if(!this.comum.activeResource) 
+        this.comum.activeResource = resource[i];
+    });
     
 
   }
 
-   ngOnInit() {     
+   ngOnInit() {   
      
+     this.resource = resource;
   //  console.log(this.comum.userLang);
     this.comum.menuToggle.subscribe(show => (this.collapsed = !this.collapsed));
     let versionLocalStorage = this.comum.getVersion();
@@ -86,6 +108,8 @@ export class AppComponent {
         this.comum.alertInfo('Sistema foi atualizado, por favor efetue o login novamente','Atenção')
         this.logout();
       }
+
+      
   }
 
   ngOnDestroy(){

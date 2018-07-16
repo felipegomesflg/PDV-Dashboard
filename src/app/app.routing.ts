@@ -25,7 +25,7 @@ const APP_ROUTES: Routes=[
     {path: '', redirectTo: 'sales', pathMatch: 'full'},
     {path: 'resume', component: DashboardComponent, canActivate: [AuthGuard] },
     {path: 'users', component: UserComponent, canActivate: [AuthGuard, AdminGuard] },
-    {path: 'products', component: ProductComponent, canActivate: [AuthGuard] },
+    {path: 'items', component: ProductComponent, canActivate: [AuthGuard] },
     {path: 'sales', component: SaleComponent, canActivate: [AuthGuard] },
     {path: 'events', component: EventComponent, canActivate: [AuthGuard] },
     {path: 'event-sales', component: EventSaleComponent, canActivate: [AuthGuard] },

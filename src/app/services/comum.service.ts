@@ -30,6 +30,14 @@ export class ComumService {
     globalLoading: boolean = true;
     public today;
 
+    public activeResource:any;
+    public lang:any =  window.navigator.language.toLowerCase()
+
+//export var lang =  'en-us';
+    dateFormat:any;
+    
+
+
     public currentStore;
     public maskCNPJ = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
     public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
@@ -79,6 +87,12 @@ export class ComumService {
         private jsonp: Jsonp,
         private calendar: NgbCalendar,
         public intercom: Intercom) {
+
+        if(this.lang=='pt-br')
+            this.dateFormat = 'DD/MM/YYYY'
+        else
+            this.dateFormat = 'MM/DD/YYYY'
+
         this.today = calendar.getToday();
     }
 

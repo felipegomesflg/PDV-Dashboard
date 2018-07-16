@@ -3,6 +3,7 @@ import { LocalStorageService } from "angular-2-local-storage";
 import { ComumService } from '../services/comum.service';
 import { Router } from '@angular/router';
 
+
 import { AuthGuard } from '../services/auth.service';
 import * as $ from 'jquery';
 
@@ -20,59 +21,46 @@ import * as $ from 'jquery';
                                 <div class="pad-btm">
                                     <img class="img-circle img-sm img-border" [src]="displayImage" alt="Profile Picture">
                                 </div>
-                                <!--<a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
-                                    <span class="pull-right dropdown-toggle" >
-                                                    <i class="dropdown-caret"></i>
-                                                </span>
-                                                -->
+                                <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">        
                                     <p class="mnp-name">{{displayName}}</p>
+                                    <span class="pull-right dropdown-toggle" >
+                                        <i class="dropdown-caret"></i>
+                                    </span>
                                     <span class="mnp-desc" *ngIf="userType">{{userType.name}}</span>
-                                <!--</a>-->
+                                </a>
                                 
                                 
                             </div>
+                            <div id="profile-nav" class="collapse list-group bg-trans">
+                                    <a class="list-group-item" (click)="logout()">
+                                        <i class="demo-pli-unlock icon-lg icon-fw"></i> Logout
+                                    </a>
+                                </div>
                             <div class="contract">
-                                    <h4><small>Contrato Atual</small></h4>
                                     <span (click)="toggleChangeAcc()" title="Selecionar outro Contrato">
                                     {{currentAcc.trade_name}}
                                     <i class="fa fa-chevron-right right"></i>
                                     </span>
                                 </div>
-                            <!--
-                            <div id="profile-nav" class="collapse list-group bg-trans">
-                                
-                                <a href="#" class="list-group-item">
-                                    <i class="demo-pli-male icon-lg icon-fw"></i> View Profile
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="demo-pli-gear icon-lg icon-fw"></i> Settings
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="demo-pli-information icon-lg icon-fw"></i> Help
-                                </a>
-                                <a class="list-group-item" (click)="logout()">
-                                    <i class="demo-pli-unlock icon-lg icon-fw"></i> Logout
-                                </a>
-                            </div>
-                            -->
+                            
+                            
+                            
                         </div>
                         <ul id="mainnav-menu" class="list-group">
-                            <li *ngFor="let p of pages" routerLinkActive="active-link" [ngClass]="{'list-header':!p.routerLink}">
-                                <span *ngIf="!p.routerLink" class="text-uppercase text-10">{{p.label}}</span>
+                            <li *ngFor="let p of pages" routerLinkActive="active-link">
                                 <a *ngIf="p.routerLink" [routerLink]="p.routerLink">
-                                    <i [ngClass]="p.icon"></i>
                                     <span class="menu-title" (click)="toggleMenu();menuFlag = !menuFlag;">
-                                        <strong>{{p.label}}</strong>
+                                        <strong>{{p[this.comum.lang]}}</strong>
                                     </span>
                                 </a>
+                                <hr *ngIf="!p.routerLink" class="list-divider">
                             </li>
-                        </ul>
+                        </ul> 
                     </div>
-                    <div *ngIf="!currentAcc" class="profile-loader">
+                    <div *ngIf="!currentAcc" class="profile-loader"> 
                         
                     </div>
                     <ul class="list-group">
-                        <li class="list-divider"></li>
                         <li class="footer-icon animate">
                             <img src="img/icon.png" alt="Pagalee" class="brand-icon">
                             <div class="inline-flex">
@@ -124,10 +112,12 @@ import * as $ from 'jquery';
 })
 export class MenuComponent implements OnInit {
     pages: any = []
+    lang:any;
     constructor(private authService: AuthGuard, private localStorage: LocalStorageService, private comum: ComumService, private router: Router, myElement: ElementRef) {
         this.elementRef = myElement;
+        
     }
-
+    @Input('resource') resource: any;
     @Input('userType') userType: any;
     @Input('displayImage') displayImage: any;
     @Input('displayName') displayName: any;
@@ -142,7 +132,7 @@ export class MenuComponent implements OnInit {
     private version: any;
     public elementRef;
 
-    ngOnInit() {
+    ngOnInit() {        
         this.currentAcc = [];
         this.path = this.localStorage.get('path');
 
@@ -234,29 +224,13 @@ export class MenuComponent implements OnInit {
         //3 - Dono do Contrato
         //4 - Gerente do Contrato
         //5 - Dono de Loja
-
-        let menu = [
-            { label: 'Gerencial', role: "1" },
-            { label: 'Contratos', routerLink: '/account/', icon: 'fa fa-handshake-o', role: "1" },
-            { label: 'Adquirentes', routerLink: '/acquirer/', icon: 'glyphicon glyphicon-tasks', role: "1" },
-            { label: 'Logs', routerLink: '/logs/', icon: 'fa fa-history', role: "1" },
-            { label: 'Administrativo', role: "1,2,3,4,5" },
-            //{ label: 'Resumo', routerLink: '/resume/', icon: 'fa fa-area-chart',role:"1,3,4,5"},
-            { label: 'Resumo Financeiro', routerLink: '/sales/', icon: 'fa fa-dollar', role: "1,2,3,4,5" },
-            //{ label: 'Pagamentos', routerLink: '/payments/', icon: 'fa fa-dollar',role:"1,3,4,5"},
-            { label: 'Cadastros', role: "1,2,3,4,5" },
-            { label: 'Usuários', routerLink: '/users/', icon: 'fa fa-user-circle', role: "1" },
-            { label: 'Lojas', routerLink: '/store/', icon: 'fa fa-home', role: "1" },
-            { label: 'Eventos', routerLink: '/events/', icon: 'fa fa-beer', role: "1,2,3,4,5" },
-            { label: 'Categorias & Produtos', routerLink: '/products/', icon: 'fa fa-cube', role: "1,2,3,4,5" },
-            //{ label: 'Promoções', routerLink: '/event-sales/', icon: 'fa fa-money',role:"1,3,4,5"}
-        ];
+        let menu = this.resource;
         this.pages = [];
         for (var i in menu) {
             if (menu[i].role.indexOf(this.userType.id) > -1)
                 this.pages.push(menu[i]);
         }
-    }
+    } 
     logout() {
         this.authService.logout();
     }
