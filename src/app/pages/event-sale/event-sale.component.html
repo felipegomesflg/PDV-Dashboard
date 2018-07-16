@@ -1,0 +1,155 @@
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Promoções</h3>
+
+        </div>
+        <div class="panel-body ">
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="new-admin">
+                    <div class="col-sm-6 pull-right">
+                        <div class="col-sm-4">
+                            <app-dropdown-store></app-dropdown-store>
+                        </div>
+                        <button class="btn btn-primary pull-right mar-lft" (click)="openModal(discount)">Incluir Promoção</button>
+                    </div>
+                    <app-datatable [columns]="columnsDiscount" [data]="dataDiscount" (emmitClick)="openModal(discount, $event)"></app-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- DESCONTO -->
+<ng-template #discount let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+
+    <div class="modal-header">
+        <button type="button" class="close" (click)="c('Close click')"><i class="pci-cross pci-circle"></i></button>
+        <h4 class="modal-title">Cadastro de Promoção</h4>
+    </div>
+
+    <form>
+        <div class="modal-body">
+
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label" for="discount-event">Evento</label>
+                        <select2 name="type" [data]="selectEvent" [value]="EditData.eventIDSel" (valueChanged)="setEventType($event.value)">
+                        </select2>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="row">
+
+                            <!-- <app-datepicker-range (changeDateRange)="carregaDados($event)"></app-datepicker-range> -->
+
+                            <div class="col-sm-12">
+                                <fieldset class="col-sm-6">
+                                    <label for="startDate" class="control-label">Data Inicial</label>
+                                    <div class="form-group">
+                                        <input ngbDatepicker #d="ngbDatepicker" class="form-control" [disabled]="isUpdateDisabled" name="startDate" id="startDate" placeholder="dd/mm/aaaa" (ngModelChange)="this.comumService.isDateComparison(d, dEnd)" (blur)="this.comumService.isDataValid(d)" maxlength="10" (click)="d.toggle()"
+                                            [(ngModel)]="ModelstartDate">
+
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="col-sm-6">
+                                    <label for="startDate" class="control-label">Data Final</label>
+                                    <div class="form-group">
+
+                                        <input ngbDatepicker #dEnd="ngbDatepicker" class="form-control" [disabled]="isUpdateDisabled" name="endDate" id="endDate" placeholder="dd/mm/aaaa" (ngModelChange)="this.comumService.isDateComparison(dEnd, d)" (blur)="this.comumService.isDataValid(dEnd)" maxlength="10" (click)="dEnd.toggle()"
+                                            [(ngModel)]="ModelendDate">
+
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="discount-startTime" class="control-label">Hora Início</label>
+                                <input type="text" class="form-control input-sm" name="startTime" id="discount-startTime" [(ngModel)]="EditData.start_time" [textMask]="{mask: this.comumService.maskTime}">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="discount-endTime" class="control-label">Hora Fim</label>
+                                <input type="text" class="form-control input-sm" name="endTime" id="discount-endTime" [(ngModel)]="EditData.end_time" [textMask]="{mask: this.comumService.maskTime}">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <hr>
+                </div>
+
+                <div class="col-sm-6">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12 control-label " for="discount-numberDiscount">Tipo de Desconto</label>
+                            <select2 name="valueType" [data]="selectDiscountType" [value]="EditData.discountIDSel" (valueChanged)="setDiscountType($event.value)" class="col-sm-12"></select2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label" for="discount-numberDiscount">Desconto</label>
+                        <div class="input-group mar-btm">
+                            <input type="text" class="form-control" maxlength="12" placeholder="Digite o desconto" name="display_numberDiscount" id="discount-numberDiscount" (keyup)="operatorDiscountType($event.target)" [(ngModel)]="EditData.discountValue">
+                            <span *ngIf="visibleDiscountIconPercent" class="input-group-addon">{{iconPercent}}</span>
+                            <span *ngIf="visibleDiscountIconMoeda" class="input-group-addon">{{iconMoeda}}</span>
+                            <span *ngIf="!visibleDiscountIconMoeda && !visibleDiscountIconPercent" class="input-group-addon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-10 control-label" for="category">Categoria</label>
+                            <select2 name="category" [data]="selectCategory" [value]="EditData.categoryIDSel" (valueChanged)="setCategoryType($event.value)" class="col-sm-10 no-padding-right">
+                            </select2>
+
+
+                            <div class="col-sm-2 no-padding-left">
+                                <button class="col-sm-12 btn btn-primary pull-right btn-small" (click)="addCategory($event)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-10 control-label" for="product">Produto</label>
+
+                            <select2 name="product" [data]="selectProduct" [value]="EditData.productIDSel" (valueChanged)="setProductType($event.value)" class="col-sm-10  no-padding-right">
+                            </select2>
+
+                            <div class="col-sm-2 no-padding-left ">
+                                <button class="col-sm-12 btn btn-primary pull-right btn-small " (click)="addProduct($event)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="dataTable-scroll">
+                <app-datatable [filter]="false" [pagination]="false" [columns]="columnsCategoryProduct" (emmitClick)="removeRowProduct($event)" [data]="dataCategoryProduct"></app-datatable>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" *ngIf='EditData.id' (click)="deleteData()">Excluir</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+            <button class="btn btn-primary" (click)="saveData()">Salvar</button>
+        </div>
+    </form>

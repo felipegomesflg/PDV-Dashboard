@@ -1,0 +1,457 @@
+<div id="page-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-control pull-left-xs">
+        <ul class="nav nav-tabs pull-right">
+          <li *ngIf="this.comumService.accountTypeId <= 2" class="hidden-xs">
+            <input type="file" #saleBulk id="saleBulk" class="none" (change)="doSaleBulk($event)">
+            <button (click)="saleBulk.click()" class="margin-top-10">Carga de Vendas</button>
+          </li>
+          <li class="active">
+            <a href="#tab-sale" data-toggle="tab" aria-expanded="true">
+              Eventos
+            </a>
+          </li>
+          <li>
+            <a href="#tab-product" data-toggle="tab">
+              Produtos
+              <!--<span class="hidden-xs">Vendidos</span> -->
+            </a>
+          </li>
+          <li>
+            <a href="#tab-financial" data-toggle="tab">
+              Contratos
+              <!--<span class="hidden-xs">Financeiro</span> -->
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+      <h3 class="panel-title">&nbsp;
+        <span class="hidden-xs">Resumo Financeiro</span>
+      </h3>
+    </div>
+    <div class="row padding-left-20 padding-right-20 margin-top-10">
+      <div class="col-sm-4  col-xs-12 margin-top-5-xs">
+          <!--<input class="no-margin" type="checkbox" [(ngModel)]="filterPeriod" (click)="loadSalesStore();comumService.loading = true">-->
+          <app-datepicker-range [startDate]="dateRangeStart" [disabled]="!filterPeriod" [endDate]="dateRangeEnd" (changeDateRange)="changeDatePeriod($event)"></app-datepicker-range>
+        </div>
+      <div class="col-sm-4 col-xs-12 margin-top-5-xs">
+        <label for="event" class="control-label"> EVENTO</label>
+        <select2 [data]="eventList" [value]="eventIDstart" name="event" (valueChanged)="setEvent($event)"></select2>
+      </div>
+      <div class="col-sm-4 col-xs-12 margin-top-5-xs">
+        <label for="stores" class="control-label"> LOJAS</label>
+        <select2 [data]="eventStores" [value]="eventStoreIDTemp" name="stores" (valueChanged)="setStore($event)"></select2>
+      </div>
+    </div>
+
+    <div class="panel-body padding-top-5">
+      <div class="tab-content">
+        <!-- VENDAS -->
+        <div class="tab-pane  active in fade tabTodaySaleRanking" id="tab-sale">
+          <div class="row margin-top-15">
+            <div class="col-sm-4">
+              <div class="panel panel-md blue-border">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Débito
+                    <span class="pull-right">R$ {{this.comumService.fMoeda(debitPaymentTotal.toFixed(2))}}</span>
+                  </h3>
+                </div>
+                <div class="panel-body text-initial">
+                  <ul>
+                    <li *ngFor="let item of debitPayment">
+                      <img src="{{this.comumService.getBrandIco(item.brand)}}" class='brand-img'>{{item.brand}}
+                      <span class="pull-right line-height-40">R$ {{this.comumService.fMoeda(item.value.toFixed(2))}}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="panel-footer">
+                  <ul>
+                    <li *ngFor="let item of debitService">
+                      <img src="{{this.comumService.getBrandIco(item.brand)}}" class='brand-img'>{{item.brand}}
+                      <span class="pull-right line-height-40">R$ {{this.comumService.fMoeda(item.value.toFixed(2))}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="panel panel-md blue-border">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Crédito
+                    <span class="pull-right">R$ {{this.comumService.fMoeda(creditPaymentTotal.toFixed(2))}}</span>
+                  </h3>
+                </div>
+                <div class="panel-body text-initial">
+                  <ul>
+                    <li *ngFor="let item of creditPayment">
+                      <img src="{{this.comumService.getBrandIco(item.brand)}}" class='brand-img'>{{item.brand}}
+                      <span class="pull-right line-height-40">R$ {{this.comumService.fMoeda(item.value.toFixed(2))}}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="panel-footer">
+                  <ul>
+                    <li *ngFor="let item of creditService">
+                      <img src="{{this.comumService.getBrandIco(item.brand)}}" class='brand-img'>{{item.brand}}
+                      <span class="pull-right line-height-40">R$ {{this.comumService.fMoeda(item.value.toFixed(2))}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="panel panel-md blue-border">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Outros
+                    <span class="pull-right">R$ {{this.comumService.fMoeda(othersPaymentTotal.toFixed(2))}}</span>
+                  </h3>
+                </div>
+                <div class="panel-body text-initial">
+                  <ul>
+                    <li *ngFor="let item of othersPayment">
+                      <img src="{{this.comumService.getBrandIco(item.brand)}}" class='brand-img'>{{item.brand}}
+                      <span class="pull-right line-height-40">R$ {{this.comumService.fMoeda(item.value.toFixed(2))}}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="panel-footer">
+                  <ul>
+                    <li *ngFor="let item of othersService">
+                      <ng-template #tipContent>
+                        <ul style="width:100%;text-align:left;">
+                          <li *ngFor="let item of othersServiceDetail">
+                            <span style="display:inline-block; min-width:106px; text-transform:capitalize">{{item.brand}} </span>
+                            <span>R$ {{this.comumService.fMoeda(item.value.toFixed(2))}} </span>
+                          </li>
+                        </ul>
+                      </ng-template> 
+                      <img src="{{this.comumService.getBrandIco(item.brand)}}" class='brand-img'>{{item.brand}}
+                      <i class="fa fa-info-circle" [ngbTooltip]="tipContent"></i>
+                      <span class="pull-right line-height-40">R$ {{this.comumService.fMoeda(item.value.toFixed(2))}} </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-md">
+                <div class="panel-heading pink-border">
+                  <h3 class="panel-title">Cancelamentos
+                    <span class="pull-right text-danger">R$ {{this.comumService.fMoeda(totalDesconto.toFixed(2))}}</span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-md">
+                <div class="panel-heading">
+                  <h3 class="panel-title blue-border">Total Vendido
+                    <span class="pull-right">R$ {{this.comumService.fMoeda(totalSale.toFixed(2))}}</span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-md">
+                <div class="panel-heading purple-border">
+                  <h3 class="panel-title">Serviços Pagalee
+                    <span class="pull-right">R$
+                      <span *ngIf="pagaleeService.total!= undefined">- {{this.comumService.fMoeda(pagaleeService['total'].toFixed(2))}}</span>
+                    </span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="panel panel-md">
+                <div class="panel-heading green-border">
+                  <h3 class="panel-title">Total a Receber
+                    <span class="pull-right">R$ {{this.comumService.fMoeda(totalReceipt.toFixed(2))}}</span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-datatable [columns]="columnsSale" [data]="dataSale" (emmitClick)="openModal($event,products)"></app-datatable>
+        </div>
+        <div class="tab-pane fade" id="tab-product">
+          <app-datatable [columns]="columnsSaleProduct" [data]="dataSaleProduct" (emmitClick)="openModal($event,products)"></app-datatable>
+        </div>
+        <div class="tab-pane fade" id="tab-financial">
+          <form class="form-horizontal">
+            <div *ngIf="eventData" class="panel margin-top-15">
+              <div class="panel-body" *ngIf="currentContract">
+                <div class="tab-content">
+                  <div class="row">
+                    <div class="form-group">
+                      <label for="name" class="col-sm-3 control-label">Nome do evento</label>
+                      <div class="col-sm-8">
+                        <input type="text" disabled name="name" class="form-control" [(ngModel)]="eventData.additional.name">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                      <label for="name" class="col-sm-3 control-label">Data Inicial</label>
+                      <div class="col-sm-3">
+                        <input type="text" disabled name="start_date" class="form-control" [(ngModel)]="eventData.additional.tempStartDate">
+                      </div>
+                      <label for="name" class="col-sm-2 control-label">Data Final</label>
+                      <div class="col-sm-3">
+                        <input type="text" disabled name="end_date" class="form-control" [(ngModel)]="eventData.additional.tempEndDate">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                      <label for="name" class="col-sm-3 control-label">Hora Inicial</label>
+                      <div class="col-sm-3">
+                        <input type="text" disabled name="start_time" class="form-control" [(ngModel)]="eventData.additional.start_time">
+                      </div>
+                      <label for="name" class="col-sm-2 control-label">Hora Final</label>
+                      <div class="col-sm-3">
+                        <input type="text" disabled name="end_time" class="form-control" [(ngModel)]="eventData.additional.end_time">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                      <label for="name" class="col-sm-3 control-label">Tipo de Contrato</label>
+                      <div class="col-sm-3">
+                        <input type="text" disabled name="contract_type" class="form-control" [(ngModel)]="currentContract.contract_type">
+                      </div>
+                      <label for="name" class="col-sm-2 control-label">Valor do Contrato</label>
+                      <div class="col-sm-3">
+                        <input type="text" disabled name="value_contract" class="form-control" [(ngModel)]="currentContract.value">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="showBankData" *ngIf="currentContract.on_store_billing == true">
+                    <div class="row">
+                      <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Banco</label>
+                        <div class="col-sm-3">
+                          <input type="text" disabled name="bank" class="form-control" [(ngModel)]="currentContract.bank_detail.bank.name">
+                        </div>
+                        <label for="name" class="col-sm-2 control-label">Tipo de Conta</label>
+                        <div class="col-sm-3">
+                          <input type="text" disabled name="account_type" class="form-control" [(ngModel)]="currentContract.bank_detail.account_type">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Agência</label>
+                        <div class="col-sm-3">
+                          <input type="text" disabled name="agency" class="form-control" [(ngModel)]="currentContract.bank_detail.agency_number">
+                        </div>
+                        <label for="name" class="col-sm-2 control-label">Conta</label>
+                        <div class="col-sm-3">
+                          <input type="text" disabled name="account_number" class="form-control" [(ngModel)]="currentContract.bank_detail.account_number">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">Descrição</label>
+                        <div class="col-sm-8">
+                          <textarea name="description" disabled maxlength="255" rows="6" class="form-control" placeholder="Descrição do Contrato.."
+                            [(ngModel)]="currentContract.description"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div *ngFor="let p of resumeStores">
+            <div *ngIf="p.id != '0'" class="row margin-top-15 tableSlider">
+              <div class="col-sm-12">
+                <div class="panel panel-md no-margin">
+                  <div class="panel-heading purple-border">
+                    <h3 (click)="slideTable($event)" class="panel-title">{{p.text}}</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 panelTableSlider" *ngIf="currentContract">
+                <div class="showBankData" *ngIf="currentContract.on_store_billing == true">
+                  <form class="form-horizontal">
+                    <div class="panel no-margin">
+                      <div class="panel-body">
+                        <div class="tab-content">
+                          <div class="row">
+                            <div class="form-group">
+                              <label for="name" class="col-sm-3 control-label">Banco</label>
+                              <div class="col-sm-3">
+                                <input type="text" disabled name="bank" class="form-control" [(ngModel)]="currentContract[p.id].bank.name">
+                              </div>
+                              <label for="name" class="col-sm-2 control-label">Tipo de Conta</label>
+                              <div class="col-sm-3">
+                                <input type="text" disabled name="account_type" class="form-control" [(ngModel)]="currentContract[p.id].account_type">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group">
+                              <label for="name" class="col-sm-3 control-label">Agência</label>
+                              <div class="col-sm-3">
+                                <input type="text" disabled name="agency" class="form-control" [(ngModel)]="currentContract[p.id].agency_number">
+                              </div>
+                              <label for="name" class="col-sm-2 control-label">Conta</label>
+                              <div class="col-sm-3">
+                                <input type="text" disabled name="account_number" class="form-control" [(ngModel)]="currentContract[p.id].account_number">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group">
+                              <label for="name" class="col-sm-3 control-label">Descrição</label>
+                              <div class="col-sm-8">
+                                <textarea name="description" disabled maxlength="255" rows="6" class="form-control" placeholder="Descrição do Contrato.."
+                                  [(ngModel)]="currentContract[p.id].description"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                          <table class="table dataTable table-striped table-bordered tabLoj">
+                            <thead>
+                              <tr>
+                                <td>
+                                  Forma de Pagamento
+                                </td>
+                                <td>
+                                  Bandeira
+                                </td>
+                                <td>
+                                  Taxa (%)
+                                </td>
+                                <td>
+                                  Total Vendido (R$)
+                                </td>
+                                <td>
+                                  Total a Receber (R$)
+                                </td>
+                                <td>
+                                  Data
+                                </td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let esc of p.distinct_brand_credit">
+                                <td>{{esc.payment_method}}</td>
+                                <td>{{esc.brand}}</td>
+                                <td>{{esc.tax.toFixed(2)}}</td>
+                                <td>R$ {{this.comumService.fMoeda(esc.value.toFixed(2))}}</td>
+                                <td>R$ {{this.comumService.fMoeda((esc.value - esc.taxValue).toFixed(2))}}</td>
+                                <td>{{esc.payment_day}}</td>
+                              </tr>
+                              <tr *ngFor="let esd of p.distinct_brand_debit">
+                                <td>{{esd.payment_method}}</td>
+                                <td>{{esd.brand}}</td>
+                                <td>{{esd.tax.toFixed(2)}}</td>
+                                <td>R$ {{this.comumService.fMoeda(esd.value.toFixed(2))}}</td>
+                                <td>R$ {{this.comumService.fMoeda((esd.value - esd.taxValue).toFixed(2))}}</td>
+                                <td>{{esd.payment_day}}</td>
+                              </tr>
+                              <tr *ngFor="let eso of p.distinct_brand_other">
+                                <td>{{eso.payment_method}}</td>
+                                <td>{{eso.brand}}</td>
+                                <td>{{eso.tax.toFixed(2)}}</td>
+                                <td>R$ {{this.comumService.fMoeda(eso.value.toFixed(2))}}</td>
+                                <td>R$ {{this.comumService.fMoeda((eso.value - eso.taxValue).toFixed(2))}}</td>
+                                <td>{{eso.payment_day}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="row" *ngIf="p.total">
+                            <div class="col-sm-12">
+                              <div class="panel panel-md no-margin">
+                                <div class="panel-heading blue-border">
+                                  <h3 class="panel-title">Total Vendido
+                                    <span class="pull-right">R$ {{this.comumService.fMoeda(p.total.toFixed(2))}}</span>
+                                  </h3>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="p.totalTax">
+                            <div class="col-sm-12">
+                              <div class="panel panel-md margin-top-15">
+                                <div class="panel-heading green-border">
+                                  <h3 class="panel-title">Total a Receber
+                                    <span class="pull-right">R$ {{this.comumService.fMoeda(p.totalTax.toFixed(2))}}</span>
+                                  </h3>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ONLINE -->
+<ng-template #products let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+  <div class="modal-header">
+    <button type="button" class="close" (click)="c('Close click')">
+      <i class="pci-cross pci-circle"></i>
+    </button>
+    <h4 class="modal-title">Produtos da venda</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container-sale-today" id="container">
+      <!-- <app-datatable [columns]="columnsProduct" [data]="dataProdOnline"></app-datatable> -->
+
+      <table class="table dataTable table-striped table-bordered">
+        <thead>
+          <tr>
+            <td>Nome</td>
+            <td>Categoria</td>
+            <td>Quantidade</td>
+            <td>Loja</td>
+            <td>Valor</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of dataProd">
+            <td>{{p.name}}</td>
+            <td>{{p.product_category}}</td>
+            <td>{{p.amount}}</td>
+            <td>
+              <span *ngIf="p.product_store">{{p.product_store}}</span>
+            </td>
+            <td>{{p.value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+  </div>
+
+
+</ng-template>

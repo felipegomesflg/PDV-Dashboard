@@ -1,0 +1,98 @@
+<div id="page-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-title">Logs</h3>
+    </div>
+    <div class="panel-body ">
+      <div class="tab-content">
+        <!-- VENDAS -->
+        <div class="tab-pane  active in fade tabTodaySaleRanking" id="tab-sale">
+            <div class="row">
+                <div class="col-sm-4  col-xs-12 margin-top-5-xs">
+                  <input ngbDatepicker #d="ngbDatepicker" class="form-control" name="startDate" id="startDate" placeholder="dd/mm/aaaa" (ngModelChange)="loadData()" (blur)="this.comumService.isDataValid(d, dEnd)"
+                    (keyup)="this.comumService.fmask(this.comumService.fData,$event.target)" maxlength="10" (click)="d.toggle()" [(ngModel)]="ModelstartDate">
+
+                </div>
+              </div>
+          <app-datatable [columns]="columns" [data]="dataLog" (emmitClick)="openModal($event,logs)"></app-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #logs let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+  <div class="modal-header">
+    <button type="button" class="close" (click)="c('Close click')">
+      <i class="pci-cross pci-circle"></i>
+    </button>
+    <h4 class="modal-title">Logs</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="panel-body">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Data</label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control" name="date" disabled [(ngModel)]="EditData.date">
+              </div>
+
+              <label class="col-sm-2 control-label">Usuário</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" name="request_user_email" disabled [(ngModel)]="EditData.request_user_email">
+              </div>
+
+              <label class="col-sm-1 control-label">IP</label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control" name="request_user_ip" disabled [(ngModel)]="EditData.request_user_ip">
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Requisição</label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control" name="request_action" disabled [(ngModel)]="EditData.request_action">
+              </div>
+
+              <label class="col-sm-2 control-label">Caminho</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" name="request_path" disabled [(ngModel)]="EditData.request_path">
+              </div>
+              <label class="col-sm-1 control-label">Status</label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control" name="response_status_code" disabled [(ngModel)]="EditData.response_status_code">
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Requisição</label>
+              <div class="col-sm-10">
+                <textarea type="text" rows="5" class="form-control" disabled name="request_body" [(ngModel)]="EditData.request_body"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Resposta</label>
+              <div class="col-sm-10">
+                <textarea type="text" rows="5" class="form-control" disabled name="result" [(ngModel)]="EditData.result"></textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+  </div>
+</ng-template>

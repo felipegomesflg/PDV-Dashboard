@@ -1,0 +1,34 @@
+<!-- <input ngbDatepicker #d="ngbDatepicker" [displayMonths]="2" [dayTemplate]="t"  class="form-control" name="startDate" id="startDate" placeholder="dd/mm/aaaa" (ngModelChange)="this.comumService.isDateComparison(d, dEnd)" (blur)="this.comumService.isDataValid(d)" maxlength="10" (click)="d.toggle()"
+[(ngModel)]="ModelstartDate"> -->
+
+
+<label for="startDate" class="control-label">PERÍODO</label>
+
+<!-- <input class="form-control datepicker-label" [disabled]="isUpdateDisabled" maxlength="10" (click)="openDatePickerRange()" [(ngModel)]="ModelDate"> -->
+<span class="form-control hand" (click)="openDatePickerRange()" [ngClass]="{'disabled':disabled}">{{ ModelDate }}</span>
+
+
+
+<!-- <div class="col-sm-3">
+    <label for="startDate" class="control-label">Data Final</label>
+    <div class="form-group">
+        <input ngbDatepicker #dEnd="ngbDatepicker" class="form-control" [disabled]="isUpdateDisabled" name="endDate" id="endDate" placeholder="dd/mm/aaaa" (ngModelChange)="ngModelChangeDatePicker(dEnd, d)" (blur)="ngModelBlurDatePicker(dEnd)" maxlength="10" (click)="openDatePickerRange()"
+            [(ngModel)]="ModelendDate">
+    </div>
+</div> -->
+
+<ngb-datepicker class="dropdown-menu" [startDate]="startCalendar" *ngIf="isToggleDatePicker" #dp ngModel (ngModelChange)="onDateChange($event)" [displayMonths]="2" [dayTemplate]="t">
+</ngb-datepicker>
+
+<ng-template #t let-date="date" let-focused="focused">
+    <span class="custom-day" [class.focused]="focused" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+    {{ date.day }}
+  </span>
+</ng-template>
+
+<!-- <hr>
+
+<pre>From: {{ fromDate | json }} </pre>
+<pre>To: {{ toDate | json }} </pre> -->
+
+<div [ngClass]="{'none': !this.isToggleDatePicker, 'modal-backdrop': this.isToggleDatePicker}" style="z-index: 999;background-color:transparent;" (click)="closeDateRange()"></div>

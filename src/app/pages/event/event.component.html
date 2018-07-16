@@ -1,0 +1,548 @@
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Eventos</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="tab-content">
+                <!-- ADMINISTRATIVO -->
+                <div class="tab-pane fade active in" id="new-admin">
+                    <div class="col-sm-8 col-xs-12 pull-right header-button no-padding margin-bottom-10">
+                        <button *ngIf="this.comumService.accountTypeId == 1" class="btn btn-primary pull-right mar-lft" (click)="openModal('', administrativo)">Incluir Evento</button>
+                        <div class="col-sm-8 col-xs-7 pull-right pull-left-xs no-padding-xs">
+                            <app-dropdown-store [hasAll]=true></app-dropdown-store> 
+                        </div>
+                    </div>
+                    <app-datatable [columns]="columnsEvent" [data]="dataEvent" (emmitClick)="openModal($event,administrativo)"></app-datatable>
+                <!-- OPERACIONAL -->
+                <div class="tab-pane fade" id="new-op">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #administrativo let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+    <div class="modal-header">
+        <button type="button" class="close" (click)="c('Close click')">
+            <i class="pci-cross pci-circle"></i>
+        </button>
+        <h4 class="modal-title">Cadastro de Eventos</h4>
+    </div>
+
+
+    <form class="form-horizontal">
+
+        <div class="modal-body">
+
+            <div class="panel-body">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="enterpriseNumber" class="col-sm-12 ">CNPJ/CPF</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [disabled]="true" name="enterpriseNumber" id="enterpriseNumber" [(ngModel)]="enterpriseNumber">
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <label for="tradeName" class="col-sm-12">Razão Social</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [disabled]="true" name="tradeName" id="tradeName" [(ngModel)]="tradeName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-heading">
+                    <div class="panel-control pull-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#modal-event" data-toggle="tab" aria-expanded="false">
+                                    Dados
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#modal-contract" data-toggle="tab" aria-expanded="false">
+                                    Contrato
+                                </a>
+                            </li>
+                            <li (click)="setFocusById('formname')">
+                                <a href="#modal-store" data-toggle="tab" aria-expanded="false">
+                                    Lojas
+                                </a>
+                            </li>
+                            <li (click)="setAvailableChargingStores()">
+                                <a href="#modal-charging" data-toggle="tab" aria-expanded="false">
+                                    Cobrança
+                                </a>
+                            </li>
+                            <li *ngIf="!billingData.on_store_billing">
+                                <a href="#modal-payment" data-toggle="tab" aria-expanded="false">
+                                    Formas de Pagamento
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <!-- TAB DADOS -->
+                            <div class="tab-pane fade active in" id="modal-event">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Nome do evento</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1" maxlength="100"
+                                                autofocus="true" name="name" id="name" [(ngModel)]="EditData.name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="startDate" class="col-sm-3 control-label">Data Inicial</label>
+                                        <div class="col-sm-3">
+                                            <input ngbDatepicker #d="ngbDatepicker" class="form-control" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                name="startDate" id="startDate" placeholder="dd/mm/aaaa" (blur)="this.comumService.isDataValid(d, dEnd)"
+                                                (keyup)="this.comumService.fmask(this.comumService.fData,$event.target)" maxlength="10"
+                                                (click)="d.toggle()" [(ngModel)]="ModelstartDate">
+                                        </div>
+                                        <label for="startDate" class="col-sm-2 control-label">Data Final</label>
+                                        <div class="col-sm-3">
+                                            <input ngbDatepicker #dEnd="ngbDatepicker" class="form-control" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                name="endDate" id="endDate" placeholder="dd/mm/aaaa" (blur)="this.comumService.isDataValid(dEnd, d)"
+                                                (keyup)="this.comumService.fmask(this.comumService.fData,$event.target)" maxlength="10"
+                                                (click)="dEnd.toggle()" [(ngModel)]="ModelendDate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--(ngModelChange)="this.comumService.isDateComparison(d, dEnd)"
+                                (ngModelChange)="this.comumService.isDateComparison(dEnd, d)" -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="startTime" class="col-sm-3 control-label">Hora Início</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="startTime" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                id="startTime" [textMask]="{mask: this.comumService.maskTime}" [(ngModel)]="EditData.start_time">
+                                        </div>
+
+                                        <label for="endTime" class="col-sm-2 control-label">Hora Fim</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="endTime" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                id="endTime" [textMask]="{mask: this.comumService.maskTime}" [(ngModel)]="EditData.end_time">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="postal_code" class="col-sm-3 control-label">CEP</label>
+                                        <div class="col-sm-3">
+                                            <input #inputCep type="text" class="form-control" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1" name="postal_code"
+                                                id="postal_code" (keyup)="onSearchCEP(inputCep.value)" [textMask]="{mask: this.comumService.maskCEP}"
+                                                [(ngModel)]="EditData.postal_code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="address_1" class="col-sm-3 control-label">Endereço</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" maxlength="255" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                name="address_1" id="address_1" [(ngModel)]="EditData.address_1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="address_2" class="col-sm-3 control-label">Complemento</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" maxlength="255" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                name="address_2" id="address_2" [(ngModel)]="EditData.address_2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-contato">Estados</label>
+                                        <div class="col-sm-3">
+                                            <select2 [data]="stateListStatic" [value]="EditData.city.state.id" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                name="state" (valueChanged)="setStateId($event.value)"></select2>
+                                        </div>
+                                        <label class="col-sm-1 control-label" for="store-contato">Cidades</label>
+                                        <div class="col-sm-4">
+                                            <select2 [data]="cityList" [value]="EditData.city.id" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                [disabled]="!EditData.city.state.id" name="city" (valueChanged)="setCityId($event.value)"></select2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Lojas</label>
+                                            <div class="col-sm-8">
+                                                <select2 [data]="storesList" [options]="{'multiple':true}" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1"
+                                                    [value]="storesValues" (valueChanged)="setStores($event.value)"></select2>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                <!-- <div class="row">
+                                                <div class="form-group">                                                
+                                                        <label class="col-sm-3 control-label">Formas de pagamentos</label>
+                                                    <div class="col-sm-8">
+                                                        <select2 [data]="paymentMethodsList" [options]="{'multiple':true}" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1" [value]="paymentMethodsValues" (valueChanged)="setMultiValues($event.value)"></select2>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="description">Descrição</label>
+                                        <div class="col-sm-8">
+                                            <textarea name="description" id="description" [disabled]="isUpdateDisabled || this.comumService.accountTypeId != 1" maxlength="255"
+                                                rows="3" class="form-control" placeholder="Descrição do Evento.." [(ngModel)]="EditData.description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB CONTRATO -->
+                            <div class="tab-pane fade" id="modal-contract">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="store-contato">Tipo de Contrato</label>
+                                    <div class="col-sm-8">
+                                        <!-- <input type="text" [disabled]='isNewContract' placeholder="" maxlength="255" class="form-control" name="typeContract" [(ngModel)]="billingData.contract_type"> -->
+                                        <select2 [data]="contractTypeList" [disabled]='isUpdateDisabled || isNewContract' [value]="billingData.contract_type" name="typeContract"
+                                            (valueChanged)="setContractType($event.value)"></select2>
+                                    </div>
+                                </div>
+                                <!-- CONTRATO SEM ADQUIRENTE -->
+                                <div *ngIf="this.billingData.contract_type == '2'">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <input type="checkbox" [checked]="billingData.on_store_billing" [disabled]='isUpdateDisabled || isNewContract' (click)="OnBillingStore()">
+                                        </label>
+                                        <div class="col-sm-8" style="padding-top: 7px;">
+                                            Repasse por Loja
+                                            <!-- <br>(pode ser adicionado posteriormente) -->
+                                        </div>
+                                    </div>
+                                    <div class="form-group hidden">
+                                        <label class="col-sm-3 control-label" for="store-contato">Valor do Contrato</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="" maxlength="9" class="form-control billingData_value" (keyup)="this.comumService.fmask(this.comumService.fMoeda, $event.target)"
+                                                name="value" [(ngModel)]="billingData.value">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="store-contato">CNPJ/CPF do titular da conta</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" [disabled]='isUpdateDisabled || isNewContract' placeholder="" maxlength="20" class="form-control" (blur)="this.comumService.fmask(this.comumService.fCnpjCpf,$event.target,'CNPJ/CPF inválido')" name="accDetail" [(ngModel)]="billingData.bank_detail.unique_identifier">
+                                            </div>
+                                        </div> -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Banco</label>
+                                        <div class="col-sm-8">
+                                            <select2 [data]="bankListStatic" [disabled]='isUpdateDisabled || isNewContract' [value]="billingData.bank_detail.bank.id"
+                                                name="banco" (valueChanged)="setBank($event.value)"></select2>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Tipo de Conta</label>
+                                        <div class="col-sm-8">
+                                            <select2 [data]="accountTypeList" [disabled]='isUpdateDisabled || isNewContract' [value]="billingData.bank_detail.account_type"
+                                                name="type" (valueChanged)="setBankType($event.value)"></select2>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Agência</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" [disabled]='isUpdateDisabled || isNewContract' placeholder="Agência" maxlength="30" class="form-control input-sm"
+                                                name="agency" [(ngModel)]="billingData.bank_detail.agency_number">
+                                        </div>
+
+                                        <label class="col-sm-2 control-label" for="store-phone">Conta</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" [disabled]='isUpdateDisabled || isNewContract' placeholder="Conta" maxlength="30" class="form-control input-sm"
+                                                name="account" [(ngModel)]="billingData.bank_detail.account_number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="description-contract">Descrição</label>
+                                        <div class="col-sm-8">
+                                            <textarea maxlength="255" [disabled]='isUpdateDisabled || isNewContract' class="form-control" name="description-contract"
+                                                [(ngModel)]="billingData.description">
+                                                                    </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- ADQUIRENTE -->
+                                <div *ngIf="this.billingData.contract_type == '1'">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="adquirente">Adquirente</label>
+                                        <div class="col-sm-8">
+                                            <select2 [data]="acquirerListStatic" [disabled]='isUpdateDisabled || isNewContract' [value]="billingData.billing_acquirer_agreement.payment_acquirer_id"
+                                                name="adquirente" (valueChanged)="setAcquirer($event.value)"></select2>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="col-sm-3 control-label " for="adquirenteValue ">Código Adquirente</label>
+                                        <div class="col-sm-4 ">
+                                            <input type="text " [disabled]='isUpdateDisabled || isNewContract' placeholder=" " maxlength="36 " class="form-control "
+                                                name="adquirenteCode" [(ngModel)]="billingData.billing_acquirer_agreement.payment_acquirer_code">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group ">
+                                                            <label class="col-sm-3 control-label " for="adquirenteValue ">Valor Adquirente</label>
+                                                            <div class="col-sm-4 ">
+                                                                <input type="text " [disabled]='isNewContract' placeholder=" " maxlength="9" class="form-control acquirer_value" name="adquirenteValue" [(ngModel)]="billingData.billing_acquirer_agreement.value" (keyup)="this.comumService.fmask(this.comumService.fMoeda,$event.target)">
+                                                            </div>
+                                                        </div> -->
+                                </div>
+                                <!-- <div *ngIf="this.billingData.contract_type == '2'"> -->
+                                <div *ngIf="this.comumService.accountTypeId == 1 && (billingData.id && isNewContract)">
+                                    <div class="col-sm-11 no-padding">
+                                        <button class="btn btn-primary pull-right" [disabled]="isUpdateDisabled" (click)="setNewContract()">Novo Contrato Financeiro</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TAB LOJAS -->
+                            <div class="tab-pane fade" id="modal-store">
+                                <div *ngIf="(isNewContract && !storeHasStaff) || !isNewContract">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="store-contato">
+                                                <i title="Só serão listadas as lojas que possuem contrato." class="fa fa-info-circle margin-right-10"></i>Loja</label>
+                                            <div class="col-sm-8">
+                                                <select2 [data]="storesList" [disabled]='isUpdateDisabled || isNewContract' [value]="storesValues" [options]="{'multiple':true}"
+                                                    (valueChanged)="setFormStoreData($event.value)" name="store">
+                                                </select2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div [hidden]="isNewContract">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                <input type="checkbox" [checked]="storeHasStaff" (change)="storeHasStaff = !storeHasStaff">
+                                            </label>
+                                            <div class="col-sm-8" style="padding-top: 7px;">
+                                                Loja com Funcionários
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="storeHasStaff">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="store-contato">Nome do Funcionário</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="formname" [(ngModel)]="formStoreData.name" placeholder="Nome do Funcionário" maxlength="50" class="form-control"
+                                                    name="formname">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="storeHasStaff">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="store-contato">CPF</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" [(ngModel)]="formStoreData.unique_identifier" [textMask]="{mask: this.comumService.maskCPF}" placeholder="CPF"
+                                                    maxlength="20" class="form-control" name="form_unique_identifier">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="storeHasStaff">
+                                        <button class="btn btn-primary pull-right margin-bottom-15" type="button" (click)="insertStoreData()">Incluir</button>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="storeHasStaff">
+                                    <table class="table dataTable table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>Loja</td>
+                                                <td>Nome do Funcionário</td>
+                                                <td>CPF</td>
+                                                <td>Pincode</td>
+                                                <td *ngIf="!isNewContract"></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="this.tableStoreData">
+                                            <tr *ngFor="let t of tableStoreData">
+                                                <td>{{t.store}}</td>
+                                                <td>{{t.name}}</td>
+                                                <td>{{this.comumService.fCpf(t.unique_identifier)}}</td>
+                                                <td>{{t.pin_code}}</td>
+                                                <td *ngIf="!isNewContract">
+                                                    <i (click)="deleteTableRow(t)" class="demo-pli-cross icon-lg icon-remove"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- TAB COBRANCA -->
+                            <div class="tab-pane fade" id="modal-charging">
+                                <div *ngIf="isChargingEditionEnabled || !isNewContract">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="store-charging">
+                                                <i title="Só serão mostradas as lojas selecionadas anteriormente." class="fa fa-info-circle margin-right-10"></i>Loja
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select2 [data]="storesListCharging" [value]="storeIDCharging" name="store-charging" (valueChanged)="setFormChargingData($event.value)">
+                                                </select2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">Nome</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" maxlength="200" autofocus="true" name="name_charging" id="name_charging" [(ngModel)]="formChargingData.name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">Valor Gasto</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" (keyup)="this.comumService.fmask(this.comumService.fMoeda, $event.target)" maxlength="200"
+                                                    autofocus="true" name="value_spended" id="value_spended" [(ngModel)]="formChargingData.expense">
+                                            </div>
+                                            <label for="name" class="col-sm-2 control-label">Valor a Cobrar</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" (keyup)="this.comumService.fmask(this.comumService.fMoeda, $event.target)" maxlength="200"
+                                                    autofocus="true" name="charging_value" id="charging_value" [(ngModel)]="formChargingData.value">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="description_charging">Descrição</label>
+                                            <div class="col-sm-8">
+                                                <textarea name="description_charging" id="description_charging" maxlength="255" rows="3" class="form-control" placeholder="Descrição da Despesa.."
+                                                    [(ngModel)]="formChargingData.description"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button class="btn btn-primary pull-right margin-bottom-15" type="button" (click)="insertChargingData()">Incluir</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <table class="table dataTable table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>Nome</td>
+                                                <td>Valor Gasto</td>
+                                                <td>Valor a Cobrar</td>
+                                                <td>Loja</td>
+                                                <td *ngIf="!isNewContract || isChargingEditionEnabled"></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="tableChargingData">
+                                            <tr *ngFor="let c of tableChargingData" (click)=setChargingEdition(c)>
+                                                <td>{{c.name}}</td>
+                                                <td>{{this.comumService.fMoeda(c.expense)}}</td>
+                                                <td>{{this.comumService.fMoeda(c.value)}}</td>
+                                                <td>{{c.store_name}}</td>
+                                                <td *ngIf="!isNewContract || isChargingEditionEnabled">
+                                                    <i (click)="deleteTableChargingRow(c)" class="demo-pli-cross icon-lg icon-remove"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-primary pull-right margin-bottom-15" *ngIf="isUpdateDisabled && !isChargingEditionEnabled" (click)="enableChargingEdition()"
+                                        type="button">Editar informações de cobrança</button>
+                                </div>
+                            </div>
+                            <!-- TAB FORMAS DE PAGAMENTO -->
+                            <div class="tab-pane fade" id="modal-payment">
+
+                                <!-- <div class="row" *ngIf='!isUpdateDisabled || isNewContract'>    
+                                    <div class="row" *ngIf='(!this.isNewContract && !this.isUpdateDisabled) || !this.EditData.id'>
+
+                                        <div class="form-group">
+                                            <label for="paymentMethod" class="col-sm-3 control-label">Tipo de pagamento</label>
+                                            <div class="col-sm-4">
+                                                <select2 name="paymentMethod" [data]="paymentMethodsList" [value]="selectedPaymentMethodsValue" (valueChanged)="setPaymentMethodsValues($event.value)"></select2>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="paymentMethod" class="col-sm-3 control-label">Bandeiras</label>
+                                            <div class="col-sm-4">
+                                                <select2 name="paymentBrand" [data]="paymentBrandsList" [value]="selectedPaymentBrandsValue" [options]="options" (valueChanged)="setPaymentBrandsValues($event.value)" id="paymentBrand"></select2>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="acquirer" class="col-sm-3 control-label">Taxa adquirente</label>
+                                            <div class="col-sm-3 input-group mar-btm" style="float: left;">
+                                                <input type="text" class="form-control" maxlength="12" placeholder="Digite a taxa" name="display_numberTax" id="numberTax" (keyup)="this.comumService.keyupTax($event.target)" (blur)="this.comumService.blurTax($event.target)" [(ngModel)]="EditDatapaymentFee.acquirer_fee">
+                                                <span class="input-group-addon">%</span>
+                                            </div>
+
+                                            <label for="acquirer" class="col-sm-2 control-label">Dias do Adquirente</label>
+                                            <div class="col-sm-3 input-group">
+                                                <input type="text" class="form-control" maxlength="3" placeholder="Digite o dia" (keyup)="this.comumService.fmask(this.comumService.fNum, $event.target)" name="display_numberTax" id="numberTax" [(ngModel)]="EditDatapaymentFee.acquirer_days">
+                                                                                                                
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="acquirer" class="col-sm-3 control-label">Taxa do cliente</label>
+                                            <div class="col-sm-3 input-group mar-btm" style="float: left;">
+                                                <input type="text" class="form-control" maxlength="12" placeholder="Digite a taxa" name="display_numberTax" id="numberTax" (keyup)="this.comumService.keyupTax($event.target)" (blur)="this.comumService.blurTax($event.target)" [(ngModel)]="EditDatapaymentFee.payout_fee">
+                                                <span class="input-group-addon">%</span>
+                                            </div>
+
+                                            <label for="acquirer" class="col-sm-2 control-label">Dias do cliente</label>
+                                            <div class="col-sm-3 input-group">
+                                                <input type="text" class="form-control" maxlength="3" placeholder="Digite o dia" (keyup)="this.comumService.fmask(this.comumService.fNum, $event.target)" name="display_numberTax" id="numberTax" [(ngModel)]="EditDatapaymentFee.payout_days">
+                                                                                                                 
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-2 pull-right">
+                                                <button class="col-sm-10 btn btn-primary btn-small" (click)="addPaymentMethodTax($event)">Incluir</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    -->
+
+                                <app-datatable [filter]="false" [pagination]="false" [columns]="columnsPaymentMethodAndTax" (emmitClick)="removeRowPaymentTax($event)"
+                                    [data]="dataPaymentMethodAndTax"></app-datatable>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" *ngIf='this.comumService.accountTypeId == 1 && EditData.id' [disabled]="isUpdateDisabled"
+                (click)="deleteData()">Excluir</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+            <button type="submit" class="btn btn-primary" *ngIf="this.comumService.accountTypeId == 1" [disabled]="isUpdateDisabled && !isChargingEditionEnabled"
+                (click)="saveData()">Salvar</button>
+        </div>
+
+
+    </form>
+</ng-template>

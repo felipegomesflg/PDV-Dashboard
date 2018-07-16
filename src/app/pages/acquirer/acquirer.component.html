@@ -1,0 +1,86 @@
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Adquirente</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="tab-content">
+                <!-- ADQUIRENTE -->
+                <div class="tab-pane fade active in" id="new-op">
+                    <div class="col-sm-6 pull-right header-button no-padding">
+                        <button class="btn btn-primary pull-right mar-lft" (click)="openModal(acquirer, '')">Incluir Adquirente</button>
+                    </div>
+                    <app-datatable [columns]="columnsAcquirer" [data]="dataAcquirer" (emmitClick)="openModal(acquirer, $event)"></app-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADQUIRENTE -->
+<ng-template #acquirer let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+    <div class="modal-header">
+        <button type="button" class="close" (click)="c('Close click')">
+      <i class="pci-cross pci-circle"></i>
+    </button>
+        <h4 class="modal-title">Cadastro de Adquirente</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="panel-body">
+                <div class="col-sm-12">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            <label class="control-label">Nome do adquirente</label>
+                            <input type="text" placeholder="Digite o nome do adquirente" maxlength="30" name="name_acquirer" class="form-control input-sm" id="admin-acquirer" [(ngModel)]="EditData.name">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            <label class="control-label">Nome do contato</label>
+                            <input type="text" placeholder="Digite o nome do contato" maxlength="30" name="name_contato" class="form-control input-sm" id="admin-contato" [(ngModel)]="EditData.contact_detail.name">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-8">
+
+                            <label class="control-label" for="store-mail">Email</label>
+                            <input type="text" placeholder="Digite o e-mail" maxlength="255" class="form-control" name="display_email" [(ngModel)]="EditData.contact_detail.email" (blur)="this.comumService.fmask(this.comumService.isEmail,$event.target,'Email inválido')">
+
+                        </div>
+
+                        <div class="col-sm-4">
+
+                            <label class="control-label" for="store-phone">Telefone</label>
+                            <input type="text" placeholder="Digite o telefone" [textMask]="{mask: this.comumService.maskPhone , guide: true}" class="form-control input-sm" name="display_phone" [(ngModel)]="EditData.contact_detail.phone_number">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            <label class="control-label">Descrição</label>
+                            <textarea placeholder="Digite aqui a descrição" maxlength="255" rows="4" class="form-control" name="description" [(ngModel)]="EditData.description"></textarea>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" (click)="deleteData(false)" *ngIf='EditData.id'>Excluir</button>
+        <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+        <button class="btn btn-primary" (click)="saveData(false)">Salvar</button>
+    </div>
+</ng-template>

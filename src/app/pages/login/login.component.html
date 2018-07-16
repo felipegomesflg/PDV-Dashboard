@@ -1,0 +1,63 @@
+<div id="container" class="cls-container">
+    <div id="bg-overlay" class="bg-img"></div>
+
+
+    <!-- LOGIN FORM -->
+    <!--===================================================-->
+    <div class="cls-content bounceIn animated" *ngIf="!forgot">
+        <div class="cls-content-sm panel animated" [ngClass]="denied">
+            <div class="panel-body">
+                <div class="mar-ver pad-btm">
+                    <h1 class="h3"><img src="img/logo_vertical.jpg" width="65%"></h1>
+                    <p class="login-title">Por favor entre com suas credenciais.</p>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" maxlength="255" (blur)="this.comum.fmask(this.comum.isEmail,$event.target,'Email inválido')" [(ngModel)]="email" placeholder="Email" name="email" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" [(ngModel)]="password" placeholder="Senha" name="senha">
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" (click)="loginEmail()"><span [ngClass]="loaderBtn">Entrar</span></button>
+
+                </form>
+            </div>
+
+            <div class="pad-all">
+
+                <div class="media pad-top bord-top">
+                    <a (click)="forgotPass()">Esqueceu a senha?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cls-content bounceIn animated" *ngIf="forgot">
+        <div class="cls-content-sm panel  animated" [ngClass]="denied">
+            <div class="panel-body">
+                <div class="mar-ver pad-btm">
+                    <h1 class="h3"><img src="img/logo_vertical.jpg" width="65%"></h1>
+                    <p class="login-title">Esqueceu a Senha?</p>
+                    <span>Digite seu email para resetar a senha.</span>
+                </div>
+                <form action="#">
+                    <div class="form-group">
+                        <input type="text" class="form-control" maxlength="255" (blur)="this.comum.fmask(this.comum.isEmail,$event.target,'Email inválido')" [(ngModel)]="email" placeholder="Email" name="email" autofocus>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" (click)="sendLoginReset()" type="button">Enviar</button>
+                </form>
+            </div>
+            <div class="pad-all">
+
+                <div class="media pad-top bord-top">
+                    <a (click)="backLogin()">Voltar ao Login</a>
+                </div>
+            </div>
+        </div>
+
+        <!--===================================================-->
+    </div>
+
+
+
+<div class="version">&#0169; 2018 pagalee.com <span>v{{version}}</span></div>
+</div>

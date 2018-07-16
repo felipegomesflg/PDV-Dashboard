@@ -1,0 +1,32 @@
+<div id="container" class="cls-container">
+    <div id="bg-overlay" class="bg-img"></div>
+
+
+    <!-- LOGIN FORM -->
+    <!--===================================================-->
+    <div class="cls-content bounceIn animated" *ngIf="!forgot">
+        <div class="cls-content-sm panel animated" [ngClass]="denied">
+            <div class="panel-body">
+                <div class="mar-ver pad-btm">
+                    <h1 class="h3"><img src="img/logo_vertical.jpg" width="65%"></h1>
+                    <p class="login-title">Por favor entre com suas credenciais.</p>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <input type="password" class="form-control" [(ngModel)]="password" placeholder="Senha" name="senha">
+                    </div>
+                    <div class="form-group">
+                            <input type="password" class="form-control" [(ngModel)]="repassword" placeholder="Repetir Senha" name="repetirsenha">
+                        </div>
+                    <button class="btn btn-primary btn-lg btn-block" (click)="loginEmail()"><span [ngClass]="loaderBtn">Enviar</span></button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+ 
+
+
+
+<div class="version">&#0169; 2018 pagalee.com <span>v{{version}}</span></div>
+</div>

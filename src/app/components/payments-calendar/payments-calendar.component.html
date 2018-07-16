@@ -1,0 +1,117 @@
+<div class="row">
+    <div class="col-sm-8">
+        <mwl-demo-utils-calendar-header [(view)]="view" [(viewDate)]="viewDate" [locale]="locale">
+        </mwl-demo-utils-calendar-header>
+
+
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [locale]="locale" (beforeViewRender)="beforeMonthViewRender($event)" (dayClicked)="dayClicked($event.day)" [cellTemplate]="customCellTemplate">
+
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [locale]="locale">
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [locale]="locale">
+            </mwl-calendar-day-view>
+        </div>
+
+        <ng-template #customCellTemplate let-day="day" let-locale="locale">
+            <div class="cal-cell-top ">
+                <span class="badge" *ngIf="day.badgeTotal > 0">{{ day.events[0].subtitle }} </span>
+                <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+            </div>
+            <small class="badge-colored" [ngClass]="day.events[0].color" *ngIf="day.badgeTotal > 0"> {{ day.events[0].title }} </small>
+        </ng-template>
+    </div>
+    <div class="col-sm-4 padding-left-20" *ngIf="selectedDay">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="margin-10">
+                    {{comumService.dayMonth(selectedDay.date)}}
+                </h3>
+            </div>
+            <div class="col-sm-6">
+                <small>
+                            {{comumService.dayOfWeek(selectedDay.date)}}
+                        </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="agenda-detail">
+                <ul>
+                    <li class="green-border">
+                        Débito
+                    </li>
+                    <li class="purple-border">Crédito</li>
+                    <li class="blue-border">Antecipação</li>
+                    <li class="pink-border">Descontos</li>
+                    <li class="orange-border">Outros</li>
+                    <li class="gray-border">Saldo Final</li>
+                    <li class="gray-border margin-top-10">{{selectedDay.status}}</li>
+                </ul>
+            </div>
+            <div class="agenda-detail">
+                <ul>
+                    <li><span> R$ {{selectedDay.debit}} </span></li>
+                    <li><span> R$ {{selectedDay.credit}} </span></li>
+                    <li><small class="text-danger">-</small><span> R$ {{selectedDay.anticipation}} </span></li>
+                    <li><small>+</small><span> R$ {{selectedDay.void}} </span></li>
+                    <li><small>+</small><span> R$ {{selectedDay.other}} </span></li>
+                    <li><small>=</small><span> R$ {{selectedDay.balance}} </span></li>
+                    <li class=" margin-top-10"><small>=</small><span> R$ {{selectedDay.balance}} </span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="margin-top-10">
+                <button class="btn btn-block btn-primary" (click)="detailSale(selectedDay.date, tableContent)">Ver Detalhes das Operações</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" [ngClass]="{'none':salesDetail==0}">
+    <div class="col-sm-12 table-responsive  ">
+        <table class="table table-striped primary margin-top-20" #tableContent>
+            <thead>
+                <tr>
+                    <th>
+                        Categoria
+                    </th>
+                    <th>
+                        Hora da Venda
+                    </th>
+                    <th>
+                        Tipo
+                    </th>
+                    <th>
+                        Nº Parcelas
+                    </th>
+                    <th>
+                        Valor Bruto
+                    </th>
+                    <th>
+                        Valor Liquido
+                    </th>
+                    <th>
+                        Último Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of salesDetail">
+                    <td>{{item.category}}</td>
+                    <td>{{item.date}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.installments}}</td>
+                    <td>{{item.grossSale}}</td>
+                    <td>{{item.netValue}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

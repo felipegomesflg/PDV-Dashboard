@@ -1,0 +1,388 @@
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ title }}</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="tab-content">
+                <!-- Account -->
+                <div class="tab-pane fade in active" id="new-admin">
+                    <div class="col-sm-6 pull-right header-button no-padding">
+                        <button class="btn btn-primary pull-right mar-lft" (click)="openModal(modalRef)">Incluir {{ title }}</button>
+                    </div>
+                    <app-datatable [columns]="columns" [data]="data" (emmitClick)="openModal(modalRef,$event)"></app-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #modalRef let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+
+    <div class="modal-header">
+        <button type="button" class="close" (click)="c('Close click')"><i class="pci-cross pci-circle"></i></button>
+        <h4 class="modal-title">Cadastro de {{ title }}</h4>
+    </div>
+    
+    <form class="form-horizontal">
+        <div class="modal-body">
+            <div class="panel-body">
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div let isExpand class="col-sm-12 profile-picture text-center sm">
+                            <img [src]="EditData.display_image" class="framed">
+                            <input type="file" accept=".png, .jpg, .jpeg" id="file" (change)="uploadDisplayImage($event)" title="Clique na imagem, para alterá-la!">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-10">
+                    <div class="panel-heading">
+                        <div class="panel-control pull-left">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active" role="tab">
+                                    <a href="#modal-loja" data-toggle="tab" aria-expanded="false">
+                                        {{ textTab }}
+                                    </a>
+                                </li>
+                                <li role="tab">
+                                    <a href="#modal-contact" data-toggle="tab" aria-expanded="false">
+                                        Contato
+                                    </a>
+                                </li>
+                                <li role="tab">
+                                    <a href="#modal-finance" data-toggle="tab" aria-expanded="false">
+                                        Contrato Financeiro
+                                    </a>
+                                </li>
+                                <li role="tab">                                    
+                                    <a href="#modal-payment" data-toggle="tab" aria-expanded="false">
+                                        Formas de Pagamento
+                                    </a>
+                                    <!-- <a href="#" *ngIf='!isNewContract' class="disabled" data-toggle="tab" aria-expanded="false">
+                                    Formas de Pagamento
+                                    </a> -->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-body ">
+                            <div class="tab-content">
+
+                                <!-- CONTRATO -->
+                                <div class="tab-pane fade in active" id="modal-loja">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-cnpj">CNPJ/CPF</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="Digite o CNPJ/CPF" maxlength="18" (keyup)="onlyNumber($event.target)" (blur)="bindCnpjCpf($event)" id="store-cnpj" name="display_cnpj" class="form-control input-sm" [(ngModel)]="EditData.unique_enterprise_number"
+                                                [disabled]="EditData.id!=null">
+
+                                            <!-- <input type="text" autofocus="true" *ngIf="!hasCnpjCpf" placeholder="Digite o CNPJ" [textMask]="{mask: this.comumService.maskCNPJ}" id="store-cnpj" name="display_cnpj" (blur)="searchCnpj($event)" class="form-control input-sm" [(ngModel)]="EditData.unique_enterprise_number"
+                                                [disabled]="EditData.id!=null"> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-socialName">{{!hasCpf ? 'Razão Social' : 'Nome'}}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" placeholder="" maxlength="22" class="form-control input-sm" id="store-socialName" name="company_name" [(ngModel)]="EditData.company_name">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" [ngClass]="{'none':hasCpf}">
+                                        <label class="col-sm-3 control-label" for="store-namefantasy">Nome Fantasia</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" placeholder="" maxlength="22" class="form-control input-sm" id="store-namefantasy" name="trade_name" [(ngModel)]="EditData.trade_name" >
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="form-group" *ngIf="hasCpf">
+                                      <label class="col-sm-3 control-label" for="store-namefantasy">Nome</label>
+                                      <div class="col-sm-8">
+                                          <input type="text" placeholder="" maxlength="100" class="form-control input-sm" id="store-name-cpf" name="company_nameCpf" [(ngModel)]="EditData.company_name">
+                                      </div>
+                                    </div> -->
+
+                                    <div *ngIf="title == 'Contrato'">
+                                        <div class="form-group">
+                                            <label for=" postal_code" class="control-label col-sm-3">CEP</label>
+                                            <div class="col-sm-2">
+                                                <input #inputCep type="text" class="form-control" name="postal_code" id="postal_code" (blur)="onSearchCEP(inputCep.value)" [textMask]="{mask: this.comumService.maskCEP}" [(ngModel)]="EditData.postal_code">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="address_1" class="control-label col-sm-3">Endereço</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" maxlength="255" name="address_1" id="address_1" [(ngModel)]="EditData.address_1">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="address_2" class="control-label col-sm-3">Complemento</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" maxlength="255" name="address_2" id="address_2" [(ngModel)]="EditData.address_2">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="store-contato">Estado</label>
+                                            <div class="col-sm-2">
+                                                <select2 [data]="stateList" [value]="EditData.city.state.id" name="state" (valueChanged)="setStateId($event.value)"></select2>
+                                            </div>
+                                            <label class="col-sm-2 control-label" for="store-contato">Cidade</label>
+                                            <div class="col-sm-4">
+                                                <select2 [data]="cityList" [disabled]="!EditData.city.state.id" [value]="EditData.city.id" name="city" (valueChanged)="setCityId($event.value)"></select2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CONTATO -->
+                                <div class="tab-pane fade" id="modal-contact">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-contato">Nome</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" placeholder="" maxlength="50" name="display_contato" class="form-control" [(ngModel)]="EditData.contact_detail.name">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Email</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" placeholder="Digite o e-mail" maxlength="255" class="form-control" name="display_email" [(ngModel)]="EditData.contact_detail.email">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Telefone</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="Digite o telefone" [textMask]="{mask: this.comumService.maskPhone , guide: true}" class="form-control input-sm" name="display_phone" [(ngModel)]="EditData.contact_detail.phone_number">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- FINANCEIRO -->
+                                <div class="tab-pane fade" id="modal-finance">
+                                    <div class="form-group" *ngIf='!billingData.id'>
+                                        <label class="col-sm-3 control-label">
+                                            <input type="checkbox" [checked]="!isNewContract" (click)="newContract()">
+                                        </label>
+                                        <div class="col-sm-8">
+                                            Cadastrar sem contrato <br>(pode ser adicionado posteriormente)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" *ngIf="isStore">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary" [disabled]='!isNewContract' (click)="formContracting('getForm')">Buscar dados do contratante</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" *ngIf="!isStore">
+                                        <label class="col-sm-3 control-label">
+                                            <input type="checkbox" [checked]="billingData.on_store_billing"  [disabled]='!isNewContract' (click)="OnBillingStore()">
+                                        </label>
+                                        <div class="col-sm-8" style="padding-top: 7px;">
+                                            Repasse por Loja <!-- <br>(pode ser adicionado posteriormente) -->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-contato">Valor do Contrato</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" [disabled]='!isNewContract' placeholder="" maxlength="9" class="form-control billingData_value" (keyup)="this.comumService.fmask(this.comumService.fMoeda, $event.target)" name="value" [(ngModel)]="billingData.value">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-contato">Tipo de Contrato</label>
+                                        <div class="col-sm-8">
+                                            <!-- <input type="text" [disabled]='!isNewContract' placeholder="" maxlength="255" class="form-control" name="typeContract" [(ngModel)]="billingData.contract_type"> -->
+                                            <select2 [data]="contractTypeList" [disabled]='!isNewContract' [value]="billingData.contract_type" name="typeContract" (valueChanged)="setContractType($event.value)"></select2>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-contato">CNPJ/CPF do titular da conta</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" [disabled]='!isNewContract' placeholder="" maxlength="20" class="form-control" (blur)="this.comumService.fmask(this.comumService.fCnpjCpf,$event.target,'CNPJ/CPF inválido')" name="accDetail" [(ngModel)]="billingData.bank_detail.unique_identifier">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Banco</label>
+                                        <div class="col-sm-8">
+                                            <select2 [data]="bankList" [disabled]='!isNewContract' [value]="billingData.bank_detail.bank.id" name="banco" (valueChanged)="setBank($event.value)"></select2>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Tipo de Conta</label>
+                                        <div class="col-sm-8">
+                                            <select2 [data]="accountTypeList" [disabled]='!isNewContract' [value]="billingData.bank_detail.account_type" name="type" (valueChanged)="setBankType($event.value)"></select2>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-phone">Agência</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" [disabled]='!isNewContract' placeholder="Agência" maxlength="30" class="form-control input-sm" name="agency" [(ngModel)]="billingData.bank_detail.agency_number">
+                                        </div>
+
+                                        <label class="col-sm-2 control-label" for="store-phone">Conta</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" [disabled]='!isNewContract' placeholder="Conta" maxlength="30" class="form-control input-sm" name="account" [(ngModel)]="billingData.bank_detail.account_number">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="adquirente">Adquirente</label>
+                                        <div class="col-sm-8">
+                                            <select2 [data]="acquirerList" [disabled]='!isNewContract' [value]="billingData.billing_acquirer_agreement.payment_acquirer_id" name=" adquirente " (valueChanged)="setAcquirer($event.value)"></select2>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ">
+                                            <label class="col-sm-3 control-label " for="adquirenteValue ">Código Adquirente</label>
+                                            <div class="col-sm-4 ">
+                                                <input type="text " [disabled]='!isNewContract' placeholder=" " maxlength="36 " class="form-control " name="adquirenteCode" [(ngModel)]="billingData.billing_acquirer_agreement.payment_acquirer_code">
+                                            </div>
+                                    </div>
+                                   
+                                    <!-- <div *ngIf="title == 'Contrato'">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="adquirente">Adquirente</label>
+                                            <div class="col-sm-8">
+                                                <select2 [data]="acquirerList" [disabled]='!isNewContract' [value]="billingData.billing_acquirer_agreement.payment_acquirer_id" name=" adquirente " (valueChanged)="setAcquirer($event.value) "></select2>
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label class="col-sm-3 control-label " for="adquirenteValue ">Código Adquirente</label>
+                                            <div class="col-sm-4 ">
+                                                <input type="text " [disabled]='!isNewContract' placeholder=" " maxlength="36 " class="form-control " name="adquirenteCode" [(ngModel)]="billingData.billing_acquirer_agreement.payment_acquirer_code ">
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label class="col-sm-3 control-label " for="adquirenteValue ">Valor Adquirente</label>
+                                            <div class="col-sm-4 ">
+                                                <input type="text " [disabled]='!isNewContract' placeholder=" " maxlength="9 " class="form-control acquirer_value" name="adquirenteValue " [(ngModel)]="billingData.billing_acquirer_agreement.value " (keyup)="this.comumService.fmask(this.comumService.fMoeda,$event.target) ">
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="store-contato">Descrição</label>
+                                        <div class="col-sm-8">
+                                            <textarea maxlength="255" [disabled]='!isNewContract' class="form-control" name="description" [(ngModel)]="billingData.description">
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" *ngIf="isStore">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary" [disabled]='!isNewContract' (click)="formContracting('clearForm')">Limpar formulário</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-11 no-padding">
+                                        <button class="btn btn-primary pull-right " *ngIf='billingData.id && !isNewContract' (click)="newContract()">Novo Contrato Financeiro</button>
+                                    </div>
+                                </div>
+
+                                <!-- FORMAS DE PAGAMENTO -->
+                                <div class="tab-pane fade" id="modal-payment">
+                                    <div class="row" *ngIf='isNewContract'>                                           
+                                        <div class="form-group">     
+                                            <label for="paymentMethod" class="col-sm-3 control-label">Tipo de pagamento</label>
+                                                <div class="col-sm-4">                                                                
+                                                    <select2 name="paymentMethod" [data]="paymentMethodsList" [value]="selectedPaymentMethodsValue" (valueChanged)="setPaymentMethodsValues($event.value)"></select2>                                                                
+                                                </div>     
+                                        </div>
+
+                                        <div class="form-group">    
+                                            <label for="paymentMethod" class="col-sm-3 control-label">Bandeiras</label>
+                                                <div class="col-sm-4">                                                                
+                                                     <select2 name="paymentBrand" [data]="paymentBrandsList" [value]="selectedPaymentBrandsValue" [options]="options" (valueChanged)="setPaymentBrandsValues($event.value)" id="paymentBrand"></select2>                                                                
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="acquirer" class="col-sm-3 control-label">Taxa adquirente</label>
+                                            <div class="col-sm-3 input-group mar-btm" style="float: left;">
+                                                <input type="text" class="form-control" maxlength="12" placeholder="Digite a taxa" name="acquirer_fee" (keyup)="this.comumService.keyupTax($event.target)" (blur)="this.comumService.blurTax($event.target)" [(ngModel)]="EditDatapaymentFee.acquirer_fee">
+                                                    <span class="input-group-addon">%</span>                                                                        
+                                            </div>
+
+                                            <label for="acquirer" class="col-sm-2 control-label">Dias do Adquirente</label>
+                                            <div class="col-sm-3 input-group">
+                                                <input type="text" class="form-control" maxlength="3" placeholder="Digite o dia" (keyup)="this.comumService.fmask(this.comumService.fNum, $event.target)" name="acquirer_days" [(ngModel)]="EditDatapaymentFee.acquirer_days">
+                                                <!-- <span class="input-group-addon">%</span>                                                                         -->
+                                            </div>
+                                            <!-- <div class="col-sm-2 pull-right">
+                                                    <button class="col-sm-10 btn btn-primary btn-small" (click)="addPaymentMethodTax($event)">Incluir</button>
+                                                </div>  -->
+                                        </div> 
+
+                                        <div class="form-group">
+                                            <label for="acquirer" class="col-sm-3 control-label">Taxa do cliente</label>
+                                            <div class="col-sm-3 input-group mar-btm" style="float: left;">
+                                                <input type="text" class="form-control" maxlength="12" placeholder="Digite a taxa" name="payout_fee" (keyup)="this.comumService.keyupTax($event.target)" (blur)="this.comumService.blurTax($event.target)" [(ngModel)]="EditDatapaymentFee.payout_fee">
+                                                <span class="input-group-addon">%</span>                                                                        
+                                            </div>
+
+                                            <label for="acquirer" class="col-sm-2 control-label">Dias do cliente</label>
+                                            <div class="col-sm-3 input-group">
+                                                <input type="text" class="form-control" maxlength="3" placeholder="Digite o dia" (keyup)="this.comumService.fmask(this.comumService.fNum, $event.target)" name="payout_days" [(ngModel)]="EditDatapaymentFee.payout_days">
+                                                <!-- <span class="input-group-addon">%</span>                                                                         -->
+                                            </div>
+                                        </div> 
+                                           
+                                        <div class="form-group">   
+                                            <div class="col-sm-2 pull-right">
+                                                <button class="col-sm-10 btn btn-primary btn-small" (click)="addPaymentMethodTax($event)">Incluir</button>
+                                            </div> 
+                                        </div>
+                                    </div>                                                    
+
+                                        <div class="row">
+                                            
+                                            
+                                        </div>
+
+                                    <div class="dataTable-scroll" [ngClass]="{'big':'!isNewContract'}">
+                                        <app-datatable [filter]="false" [pagination]="false" [columns]="columnsPaymentMethodAndTax" (emmitClick)="editPaymentMethod($event)" [data]="dataPaymentMethodAndTax"></app-datatable>
+                                    </div>
+                
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-sm-12 profile-picture" style="width: 99%;">
+                        <label class="control-label">Endereço da Imagem</label>
+                    <input #img_url type="text" placeholder="Insira o endereço da imagem nos formatos jpg, jpeg ou png" maxlength="150" name="imgUrl" class="form-control input-sm" id="admin-imgUrl"
+                    [(ngModel)]="EditData.imgUrl"
+                    (blur)="isImageFormatUrl(img_url)">
+                </div> -->
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" (click)="deleteData()" *ngIf='EditData.id'>Excluir</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+            <button class="btn btn-primary" (click)="saveData()">Salvar</button>
+        </div>
+
+    </form>
+</ng-template>

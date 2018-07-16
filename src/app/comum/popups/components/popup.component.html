@@ -1,0 +1,21 @@
+
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <alert *ngIf="!isConfirm" type="info">
+                    <h4 class="inline"><i class="fa fa-info-circle"></i></h4>
+                    {{message}}
+                </alert>
+                <alert *ngIf="isConfirm" type="warning">
+                    <h4 class="inline"><i class="fa fa-question-circle"></i></h4>
+                    {{message}}
+                </alert>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="isConfirm" type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="ok()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

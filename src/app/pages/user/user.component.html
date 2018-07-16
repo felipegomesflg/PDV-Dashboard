@@ -1,0 +1,182 @@
+<div id="page-content">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Usuários</h3>
+        </div>
+        <div class="panel-body ">
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="new-admin">
+                    <div class="col-sm-6 pull-right header-button no-padding">
+                        <button class="btn btn-primary pull-right mar-lft" (click)="openModal(administrativo)">Incluir Usuário</button>
+                    </div>
+                    <app-datatable [columns]="columns" [data]="data" (emmitClick)="openModal(administrativo,$event)"></app-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #administrativo let-c="close" let-d="dismiss" class="modal fade" id="demo-default-modal" role="dialog" tabindex="-1">
+
+    <div class="modal-header">
+        <button type="button" class="close" (click)="c('Close click')">
+            <i class="pci-cross pci-circle"></i>
+        </button>
+        <h4 class="modal-title">Cadastro de Usuário </h4>
+    </div>
+    <form class="form-horizontal">
+        <div class="modal-body">
+            <div class="panel-body">
+                <div class="panel-heading">
+                    <div class="panel-control pull-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#modal-user" data-toggle="tab" aria-expanded="false">
+                                    Dados
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#modal-type" data-toggle="tab" aria-expanded="false">
+                                    Tipos de Usuário
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <!-- ABA DADOS -->
+                            <div class="tab-pane fade active in" id="modal-user">
+                                <div class="col-sm-4 profile-picture">
+                                    <img [src]="EditData.photo_url">
+                                    <input type="file" (change)="uploadDisplayImage($event)">
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="admin-name">Nome</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="50" placeholder="Digite seu nome" name="display_name" class="form-control input-sm" id="admin-name"
+                                                [(ngModel)]="EditData.display_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="admin-email">Email</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" maxlength="255" placeholder="Digite seu email" class="form-control input-sm" id="admin-email" name="email"
+                                                [(ngModel)]="EditData.email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf='!EditData.id'>
+                                        <label class="col-sm-3 control-label" for="admin-password">Senha</label>
+                                        <div class="col-sm-2">
+                                            <input type="password" placeholder="password" class="form-control input-sm" id="admin-password" name="password" [(ngModel)]="EditData.password">
+                                        </div>
+                                        <label class="col-sm-2 control-label" for="admin-phone">Telefone</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" [textMask]="{mask: this.comumService.maskPhone , guide: false}" placeholder="Digite seu telefone" class="form-control input-sm"
+                                                id="admin-phone" name="phone_number" [(ngModel)]="EditData.phone_number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="admin-cpf">CPF</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" [textMask]="{mask: this.comumService.maskCPF}" (blur)="this.comumService.fmask(this.comumService.isCPFValid,$event.target, 'CPF Inválido')"
+                                                placeholder="Digite seu CPF" class="form-control input-sm" id="admin-cpf" name="unique_identifier"
+                                                [(ngModel)]="EditData.unique_identifier">
+                                        </div>
+                                    </div>
+                                    <div class="form-group pincode">
+                                        <label class="col-sm-3 control-label" for="admin-pincode">Pincode</label>
+                                        <div class="col-sm-8 ">
+                                            <div class="col-sm-2">
+                                                <input type="text" maxlength="1" placeholder="x" (keyup)="nextInputFocus(pin2)" (click)="$event.target.select()" name="pincode0"
+                                                    [(ngModel)]="pinArray[0]">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input type="text" maxlength="1" placeholder="x" (keyup)="nextInputFocus(pin3)" #pin2 (click)="$event.target.select()" name="pincode1"
+                                                    [(ngModel)]="pinArray[1]">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input type="text" maxlength="1" placeholder="x" (keyup)="nextInputFocus(pin4)" #pin3 (click)="$event.target.select()" name="pincode2"
+                                                    [(ngModel)]="pinArray[2]">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input type="text" maxlength="1" placeholder="x" (keyup)="nextInputFocus(pin5)" #pin4 (click)="$event.target.select()" name="pincode3"
+                                                    [(ngModel)]="pinArray[3]">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input type="text" maxlength="1" placeholder="x" (keyup)="nextInputFocus(pin6)" #pin5 (click)="$event.target.select()" name="pincode4"
+                                                    [(ngModel)]="pinArray[4]">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input type="text" maxlength="1" placeholder="x" #pin6 (click)="$event.target.select()" name="pincode5" [(ngModel)]="pinArray[5]">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ABA TIPOS DE USUARIO -->
+                            <div class="tab-pane fade" id="modal-type">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="demo-is-inputsmall">Tipo de Usuário</label>
+                                            <div class="col-sm-8">
+                                                <select2 [value]="account_type_id" [data]="accountTypeList" name="type" (valueChanged)="setType($event)"></select2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="isContractNeeded">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="demo-is-inputsmall">Contratante</label>
+                                            <div class="col-sm-8">
+                                                <select2 [value]="accVal" [data]="accValues" (valueChanged)="setAcc($event.value)" name="type"></select2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group" *ngIf="account_type_id==5">
+                                            <label class="col-sm-3 control-label" for="demo-is-inputsmall">Loja</label>
+                                            <div class="col-sm-8">
+                                                <select2 [value]="tempStore" [data]="storeList" name="type" (valueChanged)="setStore($event)" [options]="{'multiple':true}"></select2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button class="btn btn-primary pull-right margin-bottom-15" type="button" (click)="insertUserData()">Incluir</button>
+                                    </div>
+                                    <div class="row">
+                                        <table class="table dataTable table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <td>Tipo de Usuário</td>
+                                                    <td>Contratante</td>
+                                                    <td>Loja</td>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="tableUserList">
+                                                <tr *ngFor="let tul of tableUserList">
+                                                    <td>{{tul.name}}</td>
+                                                    <td>{{tul.contract_name}}</td>
+                                                    <td>{{tul.stores}}</td>
+                                                    <td><i (click)="deleteTableRow(tul)" class="demo-pli-cross icon-lg icon-remove"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" (click)="deleteData('admin')" *ngIf='EditData.id'>Excluir</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button" (click)="c('Close click')">Fechar</button>
+            <button class="btn btn-primary" (click)="saveData('admin')">Salvar</button>
+        </div>
+    </form>
+</ng-template>
