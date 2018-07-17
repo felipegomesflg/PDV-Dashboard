@@ -14,16 +14,16 @@ import { AfterViewChecked } from "@angular/core/src/metadata/lifecycle_hooks";
         <div class="row" *ngIf="filter">
             <div class="col-sm-4 col-xs-12">
                 <div class="dataTables_length pull-left" id="demo-dt-basic_length">
-
+              <!--
                 <label><span class="hidden-xs">mostrar</span>
-                <select name="number_length" [(ngModel)]="itemsPerPage" (ngModelChange)="OnChangeItemsPerPage()" class="form-control input-sm">
-                    <option *ngFor="let level of levels" [ngValue]="level.num">{{level.name}}</option>
-                </select>
-
-            </label>
+                  <select name="number_length" [(ngModel)]="itemsPerPage" (ngModelChange)="OnChangeItemsPerPage()" class="form-control input-sm rounded-input">
+                      <option *ngFor="let level of levels" [ngValue]="level.num">{{level.name}}</option>
+                  </select>
+                </label>
+                -->
                 </div>
                 <div class="searchbox">
-                    <div class="input-group custom-search-form margin-left-15">
+                    <div class="input-group custom-search-form">
                         <input type="text" *ngIf="config.filtering" placeholder="Pesquisar" class="form-control datatableFilter" [ngTableFiltering]="config.filtering" (tableChanged)="onChangeTable(config)" placeholder="Pesquisar..">
                         <span class="input-group-btn">
                             <button class="text-muted" type="button"><i class="demo-pli-magnifi-glass"></i></button>
@@ -50,7 +50,7 @@ import { AfterViewChecked } from "@angular/core/src/metadata/lifecycle_hooks";
         NÃO REATIVAR-->
 
         <div class="table-responsive w-100">
-          <table class='dataTable table table-striped table-bordered' (cellClicked)="clickEmmiter($event)"> <!-- BUG iOS(tableChanged)="onChangeTable(config)" BUG iOS-->
+          <table class='table table-striped margin-top-20' (cellClicked)="clickEmmiter($event)"> <!-- BUG iOS(tableChanged)="onChangeTable(config)" BUG iOS-->
             <tr>
               <th *ngFor='let c of columns'>
                 {{c.title}}
@@ -103,7 +103,7 @@ export class DatatableComponent implements OnInit,AfterViewChecked {
   private totalItem:string;
   private totalFooter: string;
   public page:number = 1;
-  private itemsPerPage:number = 10;
+  private itemsPerPage:number = 20;
   private itemTextHeader: number = 1;
   public maxSize:number = 5;
   public numPages:number = 1;

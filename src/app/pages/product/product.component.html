@@ -24,9 +24,9 @@
                         <input type="file" #fileInput id="bulkprod" (change)="importXlsx($event, preCargaProdutos)" class="none">
                         <input type="file" #img (change)="uploadImg($event)" class="none">
                         <input type="file" #modalImg (change)="uploadDisplayImage($event)" class="none">
-                        <button class="btn btn-default pull-right col-sm-3 col-xs-12 " (click)="fileInput.click()" *ngIf='this.comumService.accountTypeId == 1'>Carregar Produtos</button>
-                        <button class="btn btn-primary pull-right col-sm-3 col-xs-12 margin-top-5-xs" (click)="openModal(produto, event, true)">Incluir Produtos</button>
-                        <div class="col-sm-6  col-xs-12  pull-right  pull-left-xs  no-padding-xs margin-top-5-xs">
+                        <button class="btn btn-default pull-right  " (click)="fileInput.click()" *ngIf='this.comumService.accountTypeId == 1'>Carregar Produtos</button>
+                        <button class="btn btn-primary pull-right  margin-top-5-xs" (click)="openModal(produto, event, true)">Incluir Produtos</button>
+                        <div class="pull-right  pull-left-xs  no-padding-xs margin-top-5-xs">
                             <!--margin-top-5-->
                             <app-dropdown-store [hasAll] = true></app-dropdown-store>
                         </div>

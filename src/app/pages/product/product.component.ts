@@ -46,16 +46,6 @@ export class ProductComponent implements OnInit, AfterViewChecked {
 
   public columnsProd: Array<any> = [
     {
-      title: "",
-      name: "border",
-      className: "minimal"
-    },
-    {
-      title: "",
-      name: "img",
-      className: ['hidden-xs minimal']
-    },
-    {
       title: "Name",
       name: "name",
       sort: 'asc',
