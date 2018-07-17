@@ -12,6 +12,9 @@ import * as $ from 'jquery';
     template: `
   <nav id="mainnav-container"  class="no-padding z-index-15"  [ngClass]="{'adjustment-sm' : this.comum.isMenu}" >
     <div id="mainnav">
+    <a class="mainnav-toggle hand" (click)="toggleMenu()">
+        <i class="demo-pli-view-list"></i>
+    </a>
         <div id="mainnav-menu-wrap">
             <div class="nano">
                 <div class="nano-content">
@@ -35,21 +38,12 @@ import * as $ from 'jquery';
                                     <a class="list-group-item" (click)="logout()">
                                         <i class="demo-pli-unlock icon-lg icon-fw"></i> Logout
                                     </a>
-                                </div>
-                            <div class="contract">
-                                    <span (click)="toggleChangeAcc()" title="Selecionar outro Contrato">
-                                    {{currentAcc.trade_name}}
-                                    <i class="fa fa-chevron-right right"></i>
-                                    </span>
-                                </div>
-                            
-                            
-                            
+                                </div>                            
                         </div>
                         <ul id="mainnav-menu" class="list-group">
                             <li *ngFor="let p of pages" routerLinkActive="active-link">
                                 <a *ngIf="p.routerLink" [routerLink]="p.routerLink">
-                                    <span class="menu-title" (click)="toggleMenu();menuFlag = !menuFlag;">
+                                    <span class="menu-title" (click)="toggleMenu();">
                                         <strong>{{p[this.comum.lang]}}</strong>
                                     </span>
                                 </a>
@@ -81,29 +75,6 @@ import * as $ from 'jquery';
         </div>
     </div>
 </nav>
-<div class="contract-mobile visible-xs" (click)="toggleChangeAcc()">
-<img class="img-logo padding-5" src="{{currentAcc.display_image}}">
-    <span  title="Selecionar outro Contrato">
-    
-    {{currentAcc.trade_name}}
-    <i class="fa fa-chevron-down right"></i>
-    </span>
-</div>
-<aside id="aside-container" class="aside-left" [ngClass]="{'toggle':toggleAcc}">
-    <div class="row">
-        <a class="close-btn hand  right " (click)="toggleChangeAcc()"><i class="fa fa-close"></i></a>
-    </div>
-    
-    <ul>
-        <li *ngFor="let p of accList">
-            <a (click)="changeAcc(p.id)">
-                <span class="">
-                <img class="img-logo padding-5" src="{{p.display_image}}">
-                </span> {{p.trade_name}}
-            </a>
-        </li>
-    </ul>
-</aside>
 
   `,
   host: {
@@ -126,9 +97,8 @@ export class MenuComponent implements OnInit {
     private path: any;
     private pathArray: any;
     private currentAcc: any;
-    private toggleAcc: boolean = false;
     navOfset: any;
-    private menuFlag: boolean = false;
+    
     private version: any;
     public elementRef;
 
@@ -206,16 +176,14 @@ export class MenuComponent implements OnInit {
     }
 
     outsideClick() { // capturando click fora deste componente e fechando menu em dispositivos mobile
-        this.menuFlag = !this.menuFlag;
-        if ($("#mainnav-container").hasClass('adjustment-sm') && this.comum.isMenu && !this.menuFlag)
-            this.toggleMenu();
+        if (screen.width < 767) {
+            if ($("#mainnav-container").hasClass('adjustment-sm') && this.comum.isMenu)
+                this.toggleMenu();
+        }
     }
 
     toggleMenu() {
-        if (screen.width < 767) {
-            this.comum.toggleMenu();
-            this.comum.toggleMenuSm();
-        }
+        this.comum.toggleMenu();
     }
 
     ngOnChanges() {//para pegar mudanças das lojas
@@ -235,14 +203,7 @@ export class MenuComponent implements OnInit {
         this.authService.logout();
     }
 
-    toggleChangeAcc() {
-        this.toggleAcc = !this.toggleAcc;
-    }
-
-    changeAcc(acc) {
-        this.comum.pathGet = acc;
-        this.toggleAcc = false;
-    }
+   
 
     stickedMenu() {
         var scroll_top = $(window).scrollTop() + $(window).height() - 80;  //top do scroll + tamanho de tela - tamanho do icone

@@ -241,6 +241,5 @@ export class HeaderComponent implements OnInit {
   }
     toggleMenu() {
         this.comum.toggleMenu();
-        this.comum.toggleMenuSm();
     }
 }

@@ -697,10 +697,9 @@ export class ComumService {
 
     toggleMenu() {
         this.menuToggle.emit();
-    }
-    toggleMenuSm() {
         this.isMenu = !this.isMenu;
     }
+    
     alertError(msg, title = '', time = 5000) {
         this.af.authState.take(1).subscribe(af => {
             if (af)
