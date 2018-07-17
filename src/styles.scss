@@ -467,6 +467,19 @@ app-dropdown-store {
 padding:15px 0 25px !important
 }
 
+.menu-select {
+  list-style-type: none;
+  padding-left:0px;
+  >li{
+    font-weight: bold;
+  }
+}
+
+.menu-li-active{
+  background-color: #369ff4;
+  color:white;
+}
+
 .panel-md {
   .panel-body {
     height: 220px;

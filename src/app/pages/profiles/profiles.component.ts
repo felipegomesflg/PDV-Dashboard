@@ -27,6 +27,7 @@ export class ProfilesComponent implements OnInit {
   private profileData: Account = new Account();
   private parentData: any = [];
   private TempVar;
+  private menuLabels:any = ["Informação Pessoal","Teste"];
 
   loadUserData() {
     this.af.authState.subscribe(auth => {
@@ -63,6 +64,10 @@ export class ProfilesComponent implements OnInit {
       }
     });
 
+  }
+
+  menuSelected(ev){
+    console.log(ev);
   }
 
   uploadDisplayImage(evt) {
