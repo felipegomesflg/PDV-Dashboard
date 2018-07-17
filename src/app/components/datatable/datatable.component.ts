@@ -12,7 +12,7 @@ import { AfterViewChecked } from "@angular/core/src/metadata/lifecycle_hooks";
   template: `
    <div class="dataTables_wrapper dataTables_wrapper form-inline dt-bootstrap no-footer">
         <div class="row" *ngIf="filter">
-            <div class="col-sm-4 col-xs-12">
+            <div class="col-sm-4 col-xs-12 no-padding">
                 <div class="dataTables_length pull-left" id="demo-dt-basic_length">
               <!--
                 <label><span class="hidden-xs">mostrar</span>
