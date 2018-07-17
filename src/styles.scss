@@ -229,27 +229,30 @@ header {
   margin-top: 2px;
 }
 
-.dataTables_wrapper {
-  .searchbox,
-  .dataTables_length {
-    padding-top: 23px !important;
+table{
+  th{
+    background-color:#ebedef;
+    padding:15px !important;
+    font-weight: bold !important;
   }
-}
-
-.dataTable tbody tr {
-  cursor: pointer;
-  h3{
-    margin:0;
+  td{
+    padding:10px 15px !important;
   }
-}
+  tbody tr {
+    cursor: pointer;
+    h3{
+      margin:0;
+    }
+  }
 
-.dataTable tbody tr td img {
-  height: 30px;
-  width: 38px;
-}
+  tbody tr td img {
+    height: 30px;
+    width: 38px;
+  }
 
-.dataTable tbody input {
-  width: 100% !important;
+  tbody input {
+    width: 100% !important;
+  }
 }
 
 .dataTable-scroll {
@@ -460,6 +463,9 @@ app-dropdown-store {
     content: none !important;
   }
 }
+.panel-body {
+padding:15px 0 25px !important
+}
 
 .panel-md {
   .panel-body {
@@ -492,7 +498,7 @@ app-dropdown-store {
   a{
     font-weight: bold;
     font-size:14px;
-    padding: 0px 5px !important;
+    padding: 0px !important;
     line-height: initial !important;
     border:none !important;
     &:hover{
@@ -522,8 +528,64 @@ app-dropdown-store {
 }
 
 
+/*################# PADRÃO ###########################*/
+.header-button{
+  .btn,>div{
+    margin-right: 12px;
+    :last-child{
+      margin-right: 0;
+    }
+  }
+}
+//input
+input.form-control,.rounded-input,.select2-selection{
+  border: 1px solid #adb1b5 !important;
+  min-height: 40px !important;
+  border-radius: 4px !important;
+ span{
+  height: 100% !important;
+  padding-left: 15px !important;
+  line-height: 40px!important;
+ } 
+}
+input.form-control:focus{
+border:1px solid #2996cc !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+  width: 40px !important;
+  
+}
 
 
+.select2-selection__arrow:before{
+  font: normal normal normal 14px/1 FontAwesome;
+  content: "\f078";
+  font-size: 10px;
+}
+
+.select2-selection__arrow b{
+  display: none;
+}
+
+.btn{
+  display: inline-block;
+  height: 40px;
+  min-width: 80px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 500;
+  text-align: center;
+  transition: background-color .2s ease-in-out,color .2s ease-in-out,opacity .2s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+
+}
 
 //############# isdev ############### 
 
@@ -753,10 +815,7 @@ input.switch:checked+label+.switch-text {
     width: 1% !important
   }
   
-  .header-button {
-    margin-top: 23px;
-  }
-
+  
 .margin-10 {
   margin: 10px !important
 }
@@ -951,9 +1010,7 @@ input.switch:checked+label+.switch-text {
   .no-padding-xs {
     padding: 0 !important;
   }
-  .header-button {
-    margin-top: 0;
-  }
+ 
   .searchbox {
     float: right;
     width: 80%;
