@@ -211,12 +211,17 @@
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
+      
       <h4>{{this.comumService.activeResource.title.detail}}</h4>
-      <div class="form-group">
-        <div class="col-sm-4 profile-picture hidden">
+      <div class="col-sm-3 profile-picture no-padding">
+        <div>
+            <div>
           <img [src]="EditData.display_image">
           <input type="file" id="file" accept=".png, .jpg, .jpeg" (change)="uploadProductOrCategoryImage($event)">
         </div>
+      </div>
+      </div>
+      <div class="form-group col-sm-9 no-padding">
         <div class="form-row">
           <div class="form-field col-sm-12">
             <label class=" control-label text-left" for="product-name">{{this.comumService.activeResource.label.name}}</label>

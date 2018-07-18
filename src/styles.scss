@@ -487,9 +487,22 @@ app-dropdown-store {
 /*################# profile ###########################*/
 
 .profile-picture {
+  >div{
+    width: 70%;
+    padding-top: 70%;
+    position: relative;
+    background-color: #CCC;
+
+    >div{
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      width: 80%;
+      height: 80%;
+      overflow: hidden;
+    }
+  }
   img {
-    width: 250px;
-    height: 250px;
     background: url(./img/spinner.svg) 50% center no-repeat #eee;
     background-size: 20%;
     &.framed {
@@ -504,13 +517,13 @@ app-dropdown-store {
     // }
   }
   input[type=file] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 250px;
     opacity: 0;
     cursor: pointer;
+  }
+  img,input[type=file] {
+    width: 100%;
+    position: absolute;
+    top: 0;
   }
   &.sm {
     img,
