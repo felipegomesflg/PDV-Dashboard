@@ -28,6 +28,7 @@ export class ProfilesComponent implements OnInit {
   private parentData: any = [];
   private TempVar;
   private menuLabels:any = ["Informação Pessoal","Teste"];
+  private sIndex: number = null;
 
   loadUserData() {
     this.af.authState.subscribe(auth => {
@@ -66,8 +67,9 @@ export class ProfilesComponent implements OnInit {
 
   }
 
-  menuSelected(ev){
-    console.log(ev);
+  setIndex(index) {
+    this.sIndex = index;
+    console.log(this.sIndex);
   }
 
   uploadDisplayImage(evt) {
@@ -106,6 +108,7 @@ export class ProfilesComponent implements OnInit {
     this.path = this.localStorage.get("path");
     this.pathArray = this.localStorage.get("pathArray");
     this.loadUserData();
+    this.setIndex(0);
   }
 
 
