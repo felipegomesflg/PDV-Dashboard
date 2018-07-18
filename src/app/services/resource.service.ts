@@ -1,21 +1,35 @@
 
-export var resource = 
+export var resource = { //NÃO MUDAR AS KEYS, MUDAR APENAS QUANDO FOR FAZER GRANDE MANUTENÇÃO NO CODIGO QUE A UTILIZA, MUDANÇA MUITO SUCETIVEL A BUGS
+    'pt-br':
         {
         menu: [
-            { 'pt-br': 'Dashboard','en-us': 'Dashboard', routerLink: '/sales', icon: 'fa fa-dollar', role: "1,2,3,4,5",
-            resource:{
-                
+            { name: 'Dashboard', routerLink: '/sales', icon: 'fa fa-dollar', role: "1,2,3,4,5"},
+            { name: 'Sales', routerLink: '/sales', icon: 'fa fa-user-circle', role: "1,2,3,4,5" },
+            { name: 'Items', routerLink: '/items', icon: 'fa fa-home', role: "12,3,4,5",
+            title:{
+                detail:"Detalhes",
+                priceInventory:"Preço e Inventário"
+            },
+            label:{
+                name:"Nome",
+                category: "Categoria",
+                description: "",
+                location:"Lojas",
+                taxes: "Taxas",
+                price:"Valor",
+                cost:"Preço de Custo",
+                SKU:"SKU",
+                stock:"Estoque",
+                lowStock:"Alerta de Estoque",
             }
-         },
-            { 'pt-br': 'Vendas','en-us': 'Sales', routerLink: '/sales', icon: 'fa fa-user-circle', role: "" },
-            { 'pt-br': 'Itens','en-us': 'Items', routerLink: '/items', icon: 'fa fa-home', role: "1" },
-            { 'pt-br': 'Funcionários','en-us': 'Employees', routerLink: '/users', icon: 'fa fa-beer', role: "1,2,3,4,5" },
-            { 'pt-br': 'Clientes','en-us': 'Customers', routerLink: '/users', icon: 'fa fa-beer', role: "1,2,3,4,5" },
-            { 'pt-br': 'separador', role: "1,2,3,4,5" },
-            
-            { 'pt-br': 'Conta & Configurações','en-us': 'Account & Settings', routerLink: '/profiles/', icon: 'fa fa-cube', role: "1,2,3,4,5" },
+             },
+            { name: 'Employees', routerLink: '/users', icon: 'fa fa-beer', role: "1,2,3,4,5" },
+            { name: 'Customers', routerLink: '/users', icon: 'fa fa-beer', role: "1,2,3,4,5" },
+            { name: 'separador', role: "1,2,3,4,5" },
+            { name: 'Account & Settings', routerLink: '/profiles/', icon: 'fa fa-cube', role: "1,2,3,4,5" },
             //{ label: 'Promoções', routerLink: '/event-sales/', icon: 'fa fa-money',role:"1,3,4,5"}
             ]
-    }
+    },
+    'en-us':{}
 
 

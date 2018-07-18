@@ -622,26 +622,44 @@ input.form-control:focus {
 
 //#################### FORM ###############
 .form-horizontal {
-  >.row{
-    border:1px solid #e5e5e5;
+  >.row {
+    border: 1px solid #d6d9dc;
   }
   .form-group {
     margin:0;
-    border-bottom:1px solid #e5e5e5;
-    label {
-      padding: 10px 20px;
-      height: 40px;
-      background-color: #eaecee;
-      color:#000;
-      font-weight: bold;
-      margin:0;
-    }
-    div {
-      padding: 0;
-      input {
-        width: 100%;
+    .form-field {
+      padding:0;
+      margin: 0;
+      border-bottom: 1px solid #d6d9dc;
+      display: flex;
+      label {
+        padding: 15px 20px;
+        width: 200px;
+        background-color: #eaecee;
+        color: #000;
+        font-weight: bold;
+        margin: 0;
+      }
+      div {
+        padding: 0;
+        width: calc(100% - 200px);
+        input {
+          width: 100%;
+          height: 100%;
+          border: 0 !important;
+        }
+      }
+      .select2,
+      .select2-selection {
         height: 100%;
         border: 0 !important;
+        outline: 0 !important;
+      }
+      &.focused-input {
+        border-bottom: 1px solid #369ff4;
+        label {
+          background-color: #a0cff9;
+        }
       }
     }
   }

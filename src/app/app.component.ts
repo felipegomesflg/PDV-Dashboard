@@ -82,9 +82,11 @@ export class AppComponent {
     
     router.events.subscribe((val) => {
       if(location.path() != ''){
-        for(var i in resource.menu){
-          if(resource.menu[i]['routerLink'] && resource.menu[i]['routerLink'] == location.path()){
-            this.comum.activeResource = resource.menu[i];
+        
+        for(var i in resource[this.comum.lang]['menu']){
+          var item = resource[this.comum.lang]['menu'][i];
+          if(item['routerLink'] && item['routerLink'] == location.path()){
+            this.comum.activeResource = item;
           }
         }
       }

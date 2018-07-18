@@ -114,7 +114,7 @@ export class ProductComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit() {
-
+    
     this.comumService.storeid.subscribe(val => {
       if (val != this.storeid)
         this.loadData();
@@ -204,6 +204,8 @@ export class ProductComponent implements OnInit, AfterViewChecked {
   openModal(content, data, isProduct) {
     this.resetFieldsProduct();
     this.resetFieldsCategory();
+
+    
     if (data) {
       if (isProduct) {
 
@@ -241,6 +243,13 @@ export class ProductComponent implements OnInit, AfterViewChecked {
       this.comumService.modalReference = this.modalService.open(content, { backdrop: "static" });
 
     this.comumService.focusFirst();
+    $('input,textarea').on('focus',function(){
+      $(this).closest('.form-field').addClass('focused-input');
+    });
+    $('input,textarea').on('blur',function(){
+      $(this).closest('.form-field').removeClass('focused-input');
+    });
+
   }
 
   uploadProductOrCategoryImage(evt) {

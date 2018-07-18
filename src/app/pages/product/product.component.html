@@ -214,46 +214,60 @@
           <input type="file" id="file" accept=".png, .jpg, .jpeg" (change)="uploadProductOrCategoryImage($event)">
         </div>
         <div class="form-group">
-          <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Nome</label>
-          <div class="col-sm-9">
-                <input type="text" placeholder="Digite o nome" maxlength="50" name="name" class="form-control input-sm" id="admin-name" [(ngModel)]="EditData.name">
+          <div class="form-field col-sm-12">
+            <label class=" control-label text-left" for="product-name">{{this.comumService.activeResource.label.name}}</label>
+            <div >
+              <input type="text" placeholder="Digite o nome" maxlength="50" name="name" class="form-control input-sm" id="product-name" [(ngModel)]="EditData.name">
+            </div>
           </div>
         </div>
         <div class="form-group ">
-          <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Categoria</label>
-          <div class="col-sm-9">
-                <select2 [data]="categoryList" [value]="currentIdCategory" name="type" (valueChanged)="setCategory($event)"></select2>
+          <div class="form-field col-sm-12">
+            <label class=" control-label text-left" for="product-category">{{this.comumService.activeResource.label.category}}</label>
+            <div >
+              <select2 [data]="categoryList" [value]="currentIdCategory" name="type" (valueChanged)="setCategory($event)"></select2>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Preço</label>
-          <div class="col-sm-3">
-                <input type="text" placeholder="0,00" name="cost_value" class="form-control input-sm" id="cost-value" [(ngModel)]="EditData.value"
+          <div class="form-field col-sm-6">
+            <label class=" control-label text-left" for="product-value">Preço</label>
+            <div class="">
+              <input type="text" placeholder="0,00" name="cost_value" class="form-control input-sm" id="product-value" [(ngModel)]="EditData.value"
                 (keyup)="{mask: this.comumService.fmask(this.comumService.fMoeda, $event.target)}">
+            </div>
           </div>
-          <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Preço de Custo</label>
-          <div class="col-sm-3">
-                <input type="text" placeholder="0,00" name="value" maxlength="10" class="form-control input-sm" id="value" [(ngModel)]="EditData.cost_value"
+          <div class="form-field col-sm-6">
+            <label class=" control-label text-left" for="product-cost">Preço de Custo</label>
+            <div class="">
+              <input type="text" placeholder="0,00" name="value" maxlength="10" class="form-control input-sm" id="product-cost" [(ngModel)]="EditData.cost_value"
                 (keyup)="{mask: this.comumService.fmask(this.comumService.fMoeda, $event.target)}">
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Estoque Min.</label>
-          <div class="col-sm-3">
-                <input type="number" maxlength="4" placeholder="0,00" name="estoqueMin_value" class="form-control input-sm" id="estoqueMin-name"
+        <div class="form-group ">
+          <div class="form-field col-sm-6">
+            <label class=" control-label text-left" for="product-storage">Estoque Min.</label>
+            <div class="">
+              <input type="number" maxlength="4" placeholder="0,00" name="estoqueMin_value" class="form-control input-sm" id="product-storage"
                 [(ngModel)]="EditData.minimum_amount">
+            </div>
           </div>
-          <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Qtd.</label>
-          <div class="col-sm-3">
-                <input type="number" maxlength="4" placeholder="0" name="qtd_value" class="form-control input-sm" id="qtd-name" [(ngModel)]="EditData.current_amount">
+          <div class="form-field col-sm-6">
+            <label class=" control-label text-left" for="product-quantity">Qtd.</label>
+            <div class="">
+              <input type="number" maxlength="4" placeholder="0" name="qtd_value" class="form-control input-sm" id="product-quantity" [(ngModel)]="EditData.current_amount">
+            </div>
           </div>
         </div>
         <div class="form-group ">
-                <label class="col-sm-3 control-label text-left" for="demo-is-inputsmall">Descrição</label>
-                <div class="col-sm-9">
-                        <textarea placeholder="Digite aqui a descrição" maxlength="255" rows="4" class="form-control" name="description" [(ngModel)]="EditData.description"></textarea>
-                </div>
-              </div>
+          <div class="form-field col-sm-12">
+            <label class=" control-label text-left" for="product-description">Descrição</label>
+            <div >
+              <textarea placeholder="Digite aqui a descrição" maxlength="255" rows="4" class="form-control" name="description" id="product-descriotion" [(ngModel)]="EditData.description"></textarea>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
