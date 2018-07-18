@@ -32,4 +32,4 @@ export var resource = { //NÃO MUDAR AS KEYS, MUDAR APENAS QUANDO FOR FAZER GRAN
     },
     'en-us':{}
 
-
+}
