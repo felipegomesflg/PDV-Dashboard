@@ -1,0 +1,8 @@
+<div class="hand pipeFilter-selected" id="pipeFilter-selected" (click)="filter.focus()" *ngIf="!openFilter">{{selectedValue}}</div>
+<input [(ngModel)]="searchText" name="category" type="text" class="input-sm" #filter placeholder="Pesquisar">
+<ul class="pipeFilter" *ngIf="openFilter && searchText!=''">
+  <li *ngFor="let d of data | filter : searchText" [ngClass]="{'selected':d.id == value}" (click)="selectFilter(d.id)">
+    {{d.text}} 
+  </li>
+  
+</ul> 

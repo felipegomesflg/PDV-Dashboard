@@ -90,6 +90,7 @@ import { PaymentsComponent } from './pages/payments/payments.component';
 import { config, host } from './app.environment';
 import { AdminGuard } from './services/admin.service';
 import { FilterPipe } from './pipes/filter.pipe';
+import { FilterComponent } from './components/filter/filter.component';
 
 
 
@@ -129,7 +130,8 @@ export class CustomOption extends ToastOptions {
     LoginComponent,
     ProfilesComponent,
     PersonalInformationComponent,
-    FilterPipe
+    FilterPipe,
+    FilterComponent
   ],
   imports: [
     BrowserModule,

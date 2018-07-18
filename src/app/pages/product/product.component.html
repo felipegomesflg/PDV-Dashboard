@@ -36,7 +36,7 @@
         <!-- CATEGORIAS -->
         <div class="tab-pane fade" id="new-op">
           <div class="pull-left  pull-left-xs  no-padding-xs">
-            <app-dropdown-store [hasAll]=t rue></app-dropdown-store>
+            <app-dropdown-store [hasAll]=true></app-dropdown-store>
           </div>
           <button class="btn btn-primary pull-right mar-lft" (click)="openModal(categoria)">Incluir Categoria</button>
 
@@ -230,12 +230,7 @@
           <div class="form-field col-sm-12">
             <label class=" control-label text-left" for="product-category">{{this.comumService.activeResource.label.category}}</label>
             <div>
-                <input [(ngModel)]="searchText" name="category" type="text" class="input-sm">
-                <ul class="pipeFilter" *ngIf="searchText && searchText!=''">
-                  <li *ngFor="let c of categoryList | filter : searchText">
-                    {{c.text}}
-                  </li>
-                </ul>
+               <app-filter [data]="categoryList" [value]="currentIdCategory" (valueChanged)="setCategory($event)"></app-filter>
               <!--<select2 [data]="categoryList" [value]="currentIdCategory" name="type" (valueChanged)="setCategory($event)"></select2>-->
             </div>
           </div>

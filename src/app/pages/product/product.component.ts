@@ -305,7 +305,7 @@ export class ProductComponent implements OnInit, AfterViewChecked {
 
 
   setCategory(categoryId) {
-    this.currentIdCategory = categoryId.value || null;
+    this.currentIdCategory = categoryId.id || null;
   }
 
   private resetFieldsProduct() {
@@ -320,7 +320,7 @@ export class ProductComponent implements OnInit, AfterViewChecked {
 
 
   saveData(isProduct: Boolean) {
-
+    
     if (isProduct) {
       //this.EditData.display_image = this.EditData['imgUrl'];
       if (!this.currentImg && !this.validateFields(isProduct)) {
