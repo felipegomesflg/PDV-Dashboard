@@ -95,6 +95,15 @@ export class ProductComponent implements OnInit, AfterViewChecked {
   updateLines: any = [];
   createLines: any = [];
 
+  characters = [
+    'Finn the human',
+    'Jake the dog',
+    'Princess bubblegum',
+    'Lumpy Space Princess',
+    'Beemo1',
+    'Beemo2'
+  ]
+
   //private tempImage:any;
 
   public categoryList: Array<Select2OptionData>;
@@ -171,15 +180,16 @@ export class ProductComponent implements OnInit, AfterViewChecked {
               Object.keys(all.product_category).map((key, index) => {
                 this.loadProductsList(all.product_category[key]); //comentadas no deployyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
               });
+              this.categoryList = this.comumService.setSelect2(
+                this.catList,
+                "id",
+                "text",
+                "Selecione"
+              );
             }
           });
         });
-      this.categoryList = this.comumService.setSelect2(
-        this.catList,
-        "id",
-        "text",
-        "Selecione"
-      );
+      
     }
     else { // listar produtos da loja marcada
       this.db
@@ -190,14 +200,15 @@ export class ProductComponent implements OnInit, AfterViewChecked {
           this.catList = [];
           a.forEach(val => {
             this.loadProductsList(val);//comentadas no deployyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+            this.categoryList = this.comumService.setSelect2(
+              this.catList,
+              "id",
+              "text",
+              "Selecione"
+            );
           });
         });
-      this.categoryList = this.comumService.setSelect2(
-        this.catList,
-        "id",
-        "text",
-        "Selecione"
-      );
+      
     }
   }
 

@@ -43,9 +43,9 @@ import * as $ from 'jquery';
                         <ul id="mainnav-menu" class="list-group">
                             <li *ngFor="let p of pages" routerLinkActive="active-link">
                                 <a *ngIf="p.routerLink" [routerLink]="p.routerLink">
-                                    <span class="menu-title" (click)="toggleMenu();">
+                                    <span class="menu-title">
                                         <strong>{{p.name}}</strong>
-                                    </span>
+                                    </span> 
                                 </a>
                                 <hr *ngIf="!p.routerLink" class="list-divider">
                             </li>

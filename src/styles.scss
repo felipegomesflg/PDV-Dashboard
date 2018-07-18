@@ -314,14 +314,28 @@ table {
   .modal-dialog {
     width: 100%;
     height: 100%;
+    left: 0;
+    right: 0;
+    position: fixed;
     .modal-header {
-      padding: 35px;
+      .modal-title{
+        position: absolute;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        line-height: 40px;
+        pointer-events: none;
+        font-size:22px;
+      }
+      padding: 15px;
       position: relative;
       border: 0;
-      height: 100px;
+      height: 70px;
+      box-shadow: 0 0 2px 0 rgba(0,0,0,.1), 0 2px 2px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.1);
     }
     .modal-content {
       height: 100%;
+      border:0;
     }
     .modal-body {
       width: 900px;
@@ -361,6 +375,25 @@ table {
   max-height: calc(100vh - 200px);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/*####################PIPE FILTER #####################*/
+.pipeFilter{
+  position: absolute;
+  top: 47px;
+  width: calc(100% - 200px);
+  z-index: 15;
+  background-color:#FFF;
+  border:1px solid #369ff4;
+  border-top:0;
+  margin:0;
+  padding:0;
+  li{
+    padding: 0 10px;
+    color:#369ff4;
+    list-style: none;
+    line-height: 40px;
+  }
 }
 
 /*################# SELECT2 ###########################*/
@@ -639,10 +672,17 @@ input.form-control:focus {
 
 //#################### FORM ###############
 .form-horizontal {
-  >.row {
-    border: 1px solid #d6d9dc;
+  h4{
+    font-size:18px;
+    margin-bottom: 15px;
   }
   .form-group {
+    border: 1px solid #d6d9dc;
+    border-bottom:none;
+    margin:0;
+    margin-bottom: 50px;
+  }
+  .form-row {
     margin:0;
     .form-field {
       padding:0;

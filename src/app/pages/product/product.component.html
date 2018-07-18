@@ -1,7 +1,8 @@
+
 <div id="page-content">
   <div class="panel no-border">
     <div class="panel-heading">
-      <div class="panel-control pull-left">
+      <div class="panel-control pull-left"> 
         <ul class="nav nav-tabs">
           <li class="active">
             <a href="#new-admin" data-toggle="tab" aria-expanded="true">
@@ -192,44 +193,67 @@
 <!-- PRODUTOS -->
 <ng-template #produto let-c="close" let-d="dismiss" class="modal fade" id="product-default-modal" role="dialog" tabindex="-1">
   <div class="modal-header">
-    <button class="btn btn-danger pull-left margin-right-10" type="button" (click)="deleteData(true)" *ngIf='EditData.id'>Excluir</button>
-    <!-- switch -->
+    <button data-dismiss="modal" class="btn btn-default pull-left" type="button" (click)="c('Close click')">Fechar</button>
+    <!-- switch  
     <input type="checkbox" class="switch" id="switch" [(ngModel)]="EditData.active">
     <label class="switch-label" for="switch"></label>
     <p class="switch-text">
       <span *ngIf="EditData.active">Ativo</span>
       <span *ngIf="!EditData.active">Inativo</span>
     </p>
-    <h4 class="modal-title">Cadastro de Produtos</h4>
+    
     <!-- switch -->
-    <button data-dismiss="modal" class="btn btn-default pull-right" type="button" (click)="c('Close click')">Fechar</button>
+    <h4 class="modal-title">Cadastro de Produtos</h4>
     <button class="btn btn-primary pull-right" (click)="saveData(true)">Salvar</button>
+    <button class="btn btn-danger pull-right margin-right-10" type="button" (click)="deleteData(true)" *ngIf='EditData.id'>Excluir</button>
+    
 
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
-      <div class="row">
+      <h4>{{this.comumService.activeResource.title.detail}}</h4>
+      <div class="form-group">
         <div class="col-sm-4 profile-picture hidden">
           <img [src]="EditData.display_image">
           <input type="file" id="file" accept=".png, .jpg, .jpeg" (change)="uploadProductOrCategoryImage($event)">
         </div>
-        <div class="form-group">
+        <div class="form-row">
           <div class="form-field col-sm-12">
             <label class=" control-label text-left" for="product-name">{{this.comumService.activeResource.label.name}}</label>
-            <div >
-              <input type="text" placeholder="Digite o nome" maxlength="50" name="name" class="form-control input-sm" id="product-name" [(ngModel)]="EditData.name">
+            <div>
+              <input type="text" placeholder="Digite o nome" maxlength="50" name="name" class="form-control input-sm" id="product-name"
+                [(ngModel)]="EditData.name">
             </div>
           </div>
         </div>
-        <div class="form-group ">
+        <div class="form-row ">
           <div class="form-field col-sm-12">
             <label class=" control-label text-left" for="product-category">{{this.comumService.activeResource.label.category}}</label>
-            <div >
-              <select2 [data]="categoryList" [value]="currentIdCategory" name="type" (valueChanged)="setCategory($event)"></select2>
+            <div>
+                <input [(ngModel)]="searchText" name="category" type="text" class="input-sm">
+                <ul class="pipeFilter" *ngIf="searchText && searchText!=''">
+                  <li *ngFor="let c of categoryList | filter : searchText">
+                    {{c.text}}
+                  </li>
+                </ul>
+              <!--<select2 [data]="categoryList" [value]="currentIdCategory" name="type" (valueChanged)="setCategory($event)"></select2>-->
             </div>
           </div>
         </div>
-        <div class="form-group">
+
+        <div class="form-row ">
+          <div class="form-field col-sm-12">
+            <label class=" control-label text-left" for="product-description">Descrição</label>
+            <div>
+              <textarea placeholder="Digite aqui a descrição" maxlength="255" rows="4" class="form-control" name="description" id="product-descriotion"
+                [(ngModel)]="EditData.description"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4>{{this.comumService.activeResource.title.priceInventory}}</h4>
+      <div class="form-group">
+        <div class="form-row">
           <div class="form-field col-sm-6">
             <label class=" control-label text-left" for="product-value">Preço</label>
             <div class="">
@@ -245,7 +269,7 @@
             </div>
           </div>
         </div>
-        <div class="form-group ">
+        <div class="form-row ">
           <div class="form-field col-sm-6">
             <label class=" control-label text-left" for="product-storage">Estoque Min.</label>
             <div class="">
@@ -260,19 +284,8 @@
             </div>
           </div>
         </div>
-        <div class="form-group ">
-          <div class="form-field col-sm-12">
-            <label class=" control-label text-left" for="product-description">Descrição</label>
-            <div >
-              <textarea placeholder="Digite aqui a descrição" maxlength="255" rows="4" class="form-control" name="description" id="product-descriotion" [(ngModel)]="EditData.description"></textarea>
-            </div>
-          </div>
-        </div>
       </div>
     </form>
-  </div>
-  <div class="modal-footer">
-
   </div>
 </ng-template>
 
