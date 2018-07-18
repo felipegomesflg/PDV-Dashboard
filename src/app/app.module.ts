@@ -68,6 +68,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { AcquirerComponent } from './pages/acquirer/acquirer.component';
 import { LogComponent } from './pages/log/log.component';
 import { ProfilesComponent } from './pages/profiles/profiles.component';
+import { PersonalInformationComponent } from './pages/profiles/personal-information/personal-information.component';
 
 
 
@@ -125,7 +126,8 @@ export class CustomOption extends ToastOptions {
     PaymentsComponent,
     LogComponent,
     LoginComponent,
-    ProfilesComponent
+    ProfilesComponent,
+    PersonalInformationComponent
   ],
   imports: [
     BrowserModule,

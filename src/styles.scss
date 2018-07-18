@@ -494,6 +494,23 @@ app-dropdown-store {
   padding: 15px 0 25px !important
 }
 
+.menu-select {
+  list-style-type: none;
+  padding-left:0px;
+  >li{
+    font-weight: bold;
+    font-size:13px;
+  }
+  >li:hover{
+    color:inherit;
+  }
+}
+
+.menu-li-active{
+  background-color: #369ff4;
+  color:white;
+}
+
 .panel-md {
   .panel-body {
     height: 220px;
@@ -660,6 +677,9 @@ input.form-control:focus {
         label {
           background-color: #a0cff9;
         }
+      }
+      input:disabled{
+        background-color: transparent;
       }
     }
   }
@@ -943,6 +963,10 @@ span.form-control {
   padding-left: 20px !important;
 }
 
+.padding-left-16 {
+  padding-left: 16px !important;
+}
+
 .padding-right-20 {
   padding-right: 20px !important;
 }
@@ -1033,6 +1057,10 @@ span.form-control {
 
 .line-height-40 {
   line-height: 40px;
+}
+
+.text-left{
+  text-align: left !important;
 }
 
 //########### MEDIAS ###########
