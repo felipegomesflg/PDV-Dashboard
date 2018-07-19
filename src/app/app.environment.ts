@@ -4,29 +4,29 @@ export const host = isDev ? 'dev' : 'prod';
 export const config = {
     firebaseConfig: {
         dev: {
-            apiKey: "AIzaSyA-sQybfPBtnYdBX573Tnzuta7IA6sMqEk",
-            authDomain: "pagalee-dev.firebaseapp.com",
-            databaseURL: "https://pagalee-dev.firebaseio.com",
-            projectId: "pagalee-dev",
-            storageBucket: "pagalee-dev.appspot.com",
-            messagingSenderId: "130050332013"
+            apiKey: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            authDomain: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            databaseURL: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            projectId: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            storageBucket: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            messagingSenderId: "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
         },
-        prod: {
-            apiKey: "AIzaSyBo19pBYIuu-RkbHBUv3uRJpd34qsDEAJ0",
-            authDomain: "pagalee-app.firebaseapp.com",
-            databaseURL: "https://pagalee-app.firebaseio.com",
-            projectId: "pagalee-app",
-            storageBucket: "pagalee-app.appspot.com",
-            messagingSenderId: "779366756124"
+        dev: {
+            apiKey: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            authDomain: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            databaseURL: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            projectId: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            storageBucket: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            messagingSenderId: "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
         }
     }, 
     baseUrl: {
-        dev: "https://api-dev.pagalee.com/api",
-        prod: "https://api-app.pagalee.com/api",
+        dev: "https://xxxx/api",
+        prod: "https://xxxx/api",
     },
     baseUrlFirabase: {
-        dev: "https://api-dev.pagalee.com",
-        prod: "https://api-app.pagalee.com"
+        dev: "https://xxx",
+        prod: "https://xxx"
     },
 }
 
